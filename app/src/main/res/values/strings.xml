@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">mobilalk</string>
+    <string name="login">Bejelentkezés</string>
+    <string name="name">Név</string>
+    <string name="password">Jelszó</string>
+    <string name="username">Felhasználónév</string>
+    <string name="register">Regisztráció</string>
+    <string name="email">E-mail cím\n</string>
+    <string name="phoneNumber">Telefonszám</string>
 </resources>
