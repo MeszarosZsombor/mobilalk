@@ -7,4 +7,5 @@
     <string name="register">Regisztráció</string>
     <string name="email">E-mail cím\n</string>
     <string name="phoneNumber">Telefonszám</string>
+    <string name="birthdate">Születési dátum:</string>
 </resources>
