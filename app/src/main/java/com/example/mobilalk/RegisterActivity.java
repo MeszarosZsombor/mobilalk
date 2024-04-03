@@ -4,16 +4,24 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Calendar;
 
@@ -21,6 +29,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = RegisterActivity.class.getName();
     private static final String PREF_KEY = MainActivity.class.getPackage().toString();
+
+    private FirebaseAuth firebaseAuth;
 
     EditText usernameET;
     EditText emailET;
@@ -55,6 +65,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         usernameET.setText(username);
         passwordET.setText(password);
+
+        firebaseAuth = FirebaseAuth.getInstance();
     }
 
     private String getTodaysDate() {
@@ -90,6 +102,24 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void register(View view) {
+        //TODO register check es account letrehozasa
+
+        String email = emailET.getText().toString();
+        String password = passwordET.getText().toString();
+
+
+        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    Log.d(LOG_TAG, "User created");
+                    //TODO regisztracio utani bejelentkezo fuggveny
+                } else {
+                    Log.d(LOG_TAG, "User not created");
+                    Toast.makeText(RegisterActivity.this, "User not created:" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     public void openDatePicker(View view) {
