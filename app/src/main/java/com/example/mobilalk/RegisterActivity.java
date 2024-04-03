@@ -2,6 +2,7 @@ package com.example.mobilalk;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,9 +36,9 @@ public class RegisterActivity extends AppCompatActivity {
     EditText usernameET;
     EditText emailET;
     EditText phoneET;
-    EditText passwordET;
     DatePickerDialog datePickerDialog;
     Button dateButton;
+    EditText passwordET;
     EditText rePasswordET;
 
     @Override
@@ -58,6 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
         phoneET = findViewById(R.id.editTextPhone);
         dateButton = findViewById(R.id.datePickerButton);
         passwordET = findViewById(R.id.editTextPassword);
+        rePasswordET = findViewById(R.id.editTextRePassword);
 
         SharedPreferences preferences = getSharedPreferences(PREF_KEY, MODE_PRIVATE);
         String username = preferences.getString("username", "");
@@ -101,19 +103,30 @@ public class RegisterActivity extends AppCompatActivity {
         return year + "/" + month + "/" + dayOfMonth;
     }
 
-    public void register(View view) {
-        //TODO register check es account letrehozasa
+    public void loginSuccess(){
+        Intent intent = new Intent(this, ShopActivity.class);
+        startActivity(intent);
+    }
 
+    public void register(View view) {
+        String username = usernameET.getText().toString();
         String email = emailET.getText().toString();
         String password = passwordET.getText().toString();
+        String passwordConfirm = rePasswordET.getText().toString();
+        String birthdate = dateButton.getText().toString();
 
+        if(!password.equals(passwordConfirm)){
+            return;
+        }
+
+        Log.i(LOG_TAG, birthdate);
 
         firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     Log.d(LOG_TAG, "User created");
-                    //TODO regisztracio utani bejelentkezo fuggveny
+                    loginSuccess();
                 } else {
                     Log.d(LOG_TAG, "User not created");
                     Toast.makeText(RegisterActivity.this, "User not created:" + task.getException().getMessage(), Toast.LENGTH_LONG).show();

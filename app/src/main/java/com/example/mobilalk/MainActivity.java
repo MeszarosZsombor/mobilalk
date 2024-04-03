@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
                     Log.d(LOG_TAG, "Google user logged in");
-                    //TODO bejelentkezo fuggveny meghivasa
+                    loginSuccess();
                 }else{
                     Log.d(LOG_TAG, "Google user not logged in");
                     Toast.makeText(MainActivity.this, "User not logged in:" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
@@ -98,7 +98,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //TODO bejelentkezo fuggveny
+    public void loginSuccess(){
+        Intent intent = new Intent(this, ShopActivity.class);
+        startActivity(intent);
+    }
+
 
     public void login(View view) {
         String email = emailET.getText().toString();
@@ -109,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
                     Log.d(LOG_TAG, "User logged in");
-                    //TODO bejelentkezo fuggveny meghivasa
+                    loginSuccess();
                 }else{
                     Log.d(LOG_TAG, "User not logged in");
                     Toast.makeText(MainActivity.this, "User not logged in:" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
@@ -144,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
                     Log.d(LOG_TAG, "Anon user in");
-                    //TODO bejelentkezo fuggveny meghivasa
+                    loginSuccess();
                 }else{
                     Log.d(LOG_TAG, "Anon user not logged in");
                     Toast.makeText(MainActivity.this, "User not logged in:" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
