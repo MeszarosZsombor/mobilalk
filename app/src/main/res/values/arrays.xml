@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="phone_name" />
+    <string-array name="phone_info" />
+    <string-array name="phone_price" />
+    <string-array name="phone_desc" />
+    <string-array name="phone_image" />
+</resources>

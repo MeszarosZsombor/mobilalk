@@ -11,4 +11,7 @@
     <string name="continueAsGuest">Folytatás bejelentkezés nélkül</string>
     <string name="loginWithGoogle">Bejelentkezés Google fiókkal</string>
     <string name="repassword">Jelszó újra</string>
+    <string name="item_placeholder">Item\n</string>
+    <string name="item_info_placeholder">placeholder info\n</string>
+    <string name="addToCart">Kosárba</string>
 </resources>
