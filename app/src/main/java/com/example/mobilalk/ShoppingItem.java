@@ -1,6 +1,7 @@
 package com.example.mobilalk;
 
 public class ShoppingItem {
+    private String id;
 
     private String name;
     private String info;
@@ -37,5 +38,13 @@ public class ShoppingItem {
 
     public int getImageResource() {
         return imageResource;
+    }
+
+    public String __getId(){
+        return id;
+    }
+
+    public void setId(String id){
+        this.id = id;
     }
 }

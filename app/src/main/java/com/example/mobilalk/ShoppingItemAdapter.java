@@ -1,6 +1,7 @@
 package com.example.mobilalk;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +40,6 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ShoppingItem currentItem = mShoppingItemData.get(position);
 
-        // Populate the textviews with data.
         holder.bindTo(currentItem);
     }
 
@@ -48,10 +48,6 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
         return mShoppingItemData.size();
     }
 
-
-    /**
-     * RecycleView filter
-     * **/
     @Override
     public Filter getFilter() {
         return shoppingFilter;
@@ -114,6 +110,7 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
             mTitleText.setText(currentItem.getName());
             mInfoText.setText(currentItem.getInfo());
             mPriceText.setText(currentItem.getPrice());
+            Log.d("adapter", currentItem.getPrice());
 
             Glide.with(mContext).load(currentItem.getImageResource()).into(mItemImage);
         }

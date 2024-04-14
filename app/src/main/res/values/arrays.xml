@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="phone_name" />
-    <string-array name="phone_info" />
-    <string-array name="phone_price" />
-    <string-array name="phone_desc" />
-    <string-array name="phone_image" />
+    <string-array name="phone_name">
+        <item>Samsung Galaxy S24</item>
+    </string-array>
+    <string-array name="phone_info">
+        <item>Samsung Galaxy S24 rovid leirasa</item>
+    </string-array>
+    <string-array name="phone_desc">
+        <item>S24 hosszu leirasa</item>
+    </string-array>
+    <string-array name="phone_price">
+        <item>500 000 Ft</item>
+    </string-array>
+    <string-array name="phone_image">
+        <item>@drawable/galaxys24</item>
+    </string-array>
 </resources>
