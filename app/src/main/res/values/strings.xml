@@ -14,4 +14,9 @@
     <string name="item_placeholder">Item\n</string>
     <string name="item_info_placeholder">placeholder info\n</string>
     <string name="addToCart">Kosárba</string>
+    <string name="logout">Kijelentkezés</string>
+    <string name="options">Beállítás</string>
+    <string name="search">Search</string>
+    <string name="cart">cart</string>
+    <string name="settings">Beállítások</string>
 </resources>

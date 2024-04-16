@@ -19,7 +19,9 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center"
-            android:src="@drawable/shopping_cart"/>
+            android:src="@drawable/shopping_cart"
+            android:clickable="true"
+            android:focusable="true" />
 
         <FrameLayout
             android:id="@+id/circle"
@@ -28,7 +30,9 @@
             android:layout_gravity="top|end"
             android:background="@drawable/circle"
             android:visibility="gone"
-            tools:visibility="visible">
+            android:clickable="true"
+            tools:visibility="visible"
+            android:focusable="true">
 
             <TextView
                 android:id="@+id/count"
@@ -37,7 +41,9 @@
                 android:layout_gravity="center"
                 android:textColor="@color/white"
                 android:textSize="10sp"
-                tools:text="3"/>
+                android:clickable="true"
+                tools:text="3"
+                android:focusable="true" />
         </FrameLayout>
     </FrameLayout>
 </FrameLayout>

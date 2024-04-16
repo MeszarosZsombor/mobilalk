@@ -1,32 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
         android:id="@+id/search_bar"
-        app:showAsAction="always"
+        android:title="@string/search"
         android:icon="@drawable/search"
-        android:title="Search"
+        app:showAsAction="ifRoom"
         app:actionViewClass="android.widget.SearchView"
-        >
-    </item>
+        />
+
     <item
         android:id="@+id/cart"
+        android:title="@string/addToCart"
         app:showAsAction="always"
-        android:title="Cart"
         android:icon="@drawable/shopping_cart"
-        app:actionLayout="@layout/custom_menu_item"
-        >
-    </item>
-    <item
-        android:id="@+id/log_out"
-        app:showAsAction="never"
-        android:title="Kijelentkezés"
-        android:orderInCategory="2">
-    </item>
+        android:actionLayout="@layout/custom_menu_item"
+        />
+
     <item
         android:id="@+id/settings"
+        android:title="@string/settings"
         app:showAsAction="never"
-        android:title="Beállítás"
-        android:orderInCategory="1">
-    </item>
+        app:actionViewClass="android.widget.SearchView"
+        />
+
+    <item
+        android:id="@+id/log_out"
+        android:title="@string/logout"
+        app:showAsAction="never"
+        app:actionViewClass="android.widget.SearchView"
+        />
+
 </menu>
