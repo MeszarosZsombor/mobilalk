@@ -25,7 +25,7 @@
             android:textColor="?android:textColorSecondary" />
 
         <TextView
-            android:id="@+id/subTitle"
+            android:id="@+id/description"
             style="@style/ItemDetailText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
             style="@style/ItemDetailText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/subTitle"
+            android:layout_below="@id/description"
             android:layout_marginBottom="12dp"
             android:padding="8dp"
             android:textColor="@color/red"

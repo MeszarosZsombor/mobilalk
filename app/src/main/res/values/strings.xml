@@ -19,4 +19,5 @@
     <string name="search">Search</string>
     <string name="cart">cart</string>
     <string name="settings">Beállítások</string>
+    <string name="title_activity_shopping_item">ShoppingItemActivity</string>
 </resources>

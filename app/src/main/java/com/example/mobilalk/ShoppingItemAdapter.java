@@ -1,6 +1,7 @@
 package com.example.mobilalk;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,8 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapter.ViewHolder> implements Filterable {
+
+    public static final String TAG = ShoppingItemAdapter.class.getName();
     private ArrayList<ShoppingItem> mShoppingItemData = new ArrayList<>();
     private ArrayList<ShoppingItem> mShoppingItemDataAll = new ArrayList<>();
     private Context mContext;
@@ -94,7 +97,7 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
             super(itemView);
 
             mTitleText = itemView.findViewById(R.id.itemTitle);
-            mInfoText = itemView.findViewById(R.id.subTitle);
+            mInfoText = itemView.findViewById(R.id.description);
             mItemImage = itemView.findViewById(R.id.itemImage);
             mPriceText = itemView.findViewById(R.id.price);
 
@@ -102,6 +105,15 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
                 @Override
                 public void onClick(View view) {
                     ((ShopActivity)mContext).updateAlertIcon();
+                }
+            });
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, ShoppingItemActivity.class);
+                    intent.putExtra("item", mShoppingItemData.get(getAdapterPosition()));
+                    mContext.startActivity(intent);
                 }
             });
         }
@@ -113,6 +125,7 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
             Log.d("adapter", currentItem.getPrice());
 
             Glide.with(mContext).load(currentItem.getImageResource()).into(mItemImage);
+            Log.d(TAG, "bindTo: " + currentItem.getImageResource());
         }
     }
 }
