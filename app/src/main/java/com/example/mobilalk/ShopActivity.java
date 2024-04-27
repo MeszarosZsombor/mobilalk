@@ -1,5 +1,6 @@
 package com.example.mobilalk;
 
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,7 +44,7 @@ public class ShopActivity extends AppCompatActivity {
 
     private FrameLayout redCircle;
     private TextView countTV;
-    private int cartItems = 0;
+    private int cartItems;
     private int gridNumber = 2;
 
     @Override
@@ -174,17 +175,34 @@ public class ShopActivity extends AppCompatActivity {
 
         rootView.setOnClickListener(v -> onOptionsItemSelected(alertMI));
 
+        updateAlertIcon();
+
         return super.onPrepareOptionsMenu(menu);
     }
 
     public void updateAlertIcon() {
-        cartItems += 1;
-        if (0 < cartItems){
-            countTV.setText(String.valueOf(cartItems));
-        } else{
-            countTV.setText("");
+        cartItems = getCartItemCount() + 1;
+
+        if (countTV != null) {
+            if (0 < cartItems){
+                countTV.setText(String.valueOf(cartItems));
+            } else{
+                countTV.setText("");
+            }
         }
 
-        redCircle.setVisibility((cartItems > 0) ? View.VISIBLE : View.GONE);
+        SharedPreferences sharedPreferences = getSharedPreferences("cart", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("cartItemCount", cartItems);
+        editor.apply();
+
+        if (redCircle != null) {
+            redCircle.setVisibility((cartItems > 0) ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    public int getCartItemCount() {
+        SharedPreferences sharedPreferences = getSharedPreferences("cart", MODE_PRIVATE);
+        return sharedPreferences.getInt("cartItemCount", 0);
     }
 }
