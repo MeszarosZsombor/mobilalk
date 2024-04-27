@@ -1,7 +1,11 @@
 package com.example.mobilalk;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +19,7 @@ import com.bumptech.glide.Glide;
 
 public class ShoppingItemActivity extends AppCompatActivity {
     public static final String TAG = ShoppingItemActivity.class.getName();
+    Button mapButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,5 +50,12 @@ public class ShoppingItemActivity extends AppCompatActivity {
             Log.e(TAG, "Error loading image", e);
         }
         Log.d(TAG, "onCreate: " + item.getImageResource());
+
+        mapButton = (Button) findViewById(R.id.open_map);
+
+        mapButton.setOnClickListener(v -> {
+            Intent intent = new Intent(ShoppingItemActivity.this, MapsActivity.class);
+            startActivity(intent);
+        });
     }
 }

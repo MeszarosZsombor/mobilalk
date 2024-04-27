@@ -45,10 +45,19 @@
         android:layout_centerHorizontal="true"/>
 
     <Button
+        android:id="@+id/open_map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/price"
+        android:text="map"
+        android:layout_centerHorizontal="true"
+        />
+
+    <Button
         android:id="@+id/add_to_cart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/price"
+        android:layout_below="@id/open_map"
         android:text="@string/addToCart"
         android:layout_centerHorizontal="true"/>
 
