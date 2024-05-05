@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,7 +26,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
+
+import jp.wasabeef.glide.transformations.BlurTransformation;
+import jp.wasabeef.glide.transformations.ColorFilterTransformation;
 
 public class ShoppingItemActivity extends AppCompatActivity {
     public static final String TAG = ShoppingItemActivity.class.getName();
@@ -50,6 +55,7 @@ public class ShoppingItemActivity extends AppCompatActivity {
         String name = item.getName();
         String price = item.getPrice();
         String desc = item.getDesc();
+        int count = item.getCount();
 
         if(getSupportActionBar() != null){
             getSupportActionBar().setTitle(name);
@@ -59,6 +65,14 @@ public class ShoppingItemActivity extends AppCompatActivity {
         TextView priceTV = findViewById(R.id.price);
         TextView descTV = findViewById(R.id.description);
 
+        ImageView map = (ImageView) findViewById(R.id.map);
+
+        if(count < 10) {
+            TextView countTV = findViewById(R.id.count);
+
+            countTV.setText("Már csak " + count + " db maradt!");
+        }
+
         priceTV.setText(price);
         descTV.setText(desc);
         try {
@@ -66,7 +80,18 @@ public class ShoppingItemActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e(TAG, "Error loading image", e);
         }
-        Log.d(TAG, "onCreate: " + item.getImageResource());
+
+
+        try {
+            Glide.with(this)
+                    .load(R.drawable.map)
+                    .apply(RequestOptions.bitmapTransform(new BlurTransformation(25)))
+                    .into(map);
+        } catch (Exception e) {
+            Log.e(TAG, "Error loading image", e);
+        }
+
+        Log.d(TAG, "Map: " + map);
 
         mapButton = (Button) findViewById(R.id.open_map);
 
@@ -121,9 +146,25 @@ public class ShoppingItemActivity extends AppCompatActivity {
 
         rootView.setOnClickListener(v -> onOptionsItemSelected(alertMI));
 
-        updateAlertIcon();
+        refreshAlertIcon();
 
         return super.onPrepareOptionsMenu(menu);
+    }
+
+    public void refreshAlertIcon(){
+        cartItems = getCartItemCount();
+
+        if (countTV != null) {
+            if (0 < cartItems){
+                countTV.setText(String.valueOf(cartItems));
+            } else{
+                countTV.setText("");
+            }
+        }
+
+        if (redCircle != null) {
+            redCircle.setVisibility((cartItems > 0) ? View.VISIBLE : View.GONE);
+        }
     }
 
     public void updateAlertIcon() {

@@ -1,8 +1,12 @@
 package com.example.mobilalk;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -40,12 +44,14 @@ public class ShopActivity extends AppCompatActivity {
     private ArrayList<ShoppingItem> itemList;
     private ShoppingItemAdapter adapter;
     private FirebaseFirestore firestore;
-    private CollectionReference items;
+    private CollectionReference collection;
 
     private FrameLayout redCircle;
     private TextView countTV;
     private int cartItems;
     private int gridNumber = 2;
+
+    private AlarmManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +80,9 @@ public class ShopActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         firestore = FirebaseFirestore.getInstance();
-        items = firestore.collection("Phones");
+        collection = firestore.collection("Phones");
 
+        setAlarmManager();
         queryData();
     }
 
@@ -110,16 +117,18 @@ public class ShopActivity extends AppCompatActivity {
         String[] itemsInfo = getResources().getStringArray(R.array.phone_info);
         String[] itemsPrice = getResources().getStringArray(R.array.phone_price);
         String[] itemsDesc = getResources().getStringArray(R.array.phone_desc);
+        int[] itemsCount = getResources().getIntArray(R.array.count);
         TypedArray itemsImageResource = getResources().obtainTypedArray(R.array.phone_image);
         Log.d(LOG_TAG, itemsImageResource.toString());
 
         for (int i = 0; i < itemsList.length; i++){
-            items.add(new ShoppingItem(
+            collection.add(new ShoppingItem(
                     itemsList[i],
                     itemsInfo[i],
                     itemsDesc[i],
                     itemsPrice[i],
-                    itemsImageResource.getResourceId(i, 0)
+                    itemsImageResource.getResourceId(i, 0),
+                    itemsCount[i]
             ));
         }
 
@@ -130,7 +139,7 @@ public class ShopActivity extends AppCompatActivity {
     private void queryData(){
         itemList.clear();
 
-        items.orderBy("name").limit(10).get().addOnSuccessListener(queryDocumentSnapshots -> {
+        collection.orderBy("name").limit(10).get().addOnSuccessListener(queryDocumentSnapshots -> {
             for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                 ShoppingItem item = document.toObject(ShoppingItem.class);
                 itemList.add(item);
@@ -175,9 +184,25 @@ public class ShopActivity extends AppCompatActivity {
 
         rootView.setOnClickListener(v -> onOptionsItemSelected(alertMI));
 
-        updateAlertIcon();
+        refreshAlertIcon();
 
         return super.onPrepareOptionsMenu(menu);
+    }
+
+    public void refreshAlertIcon(){
+        cartItems = getCartItemCount();
+
+        if (countTV != null) {
+            if (0 < cartItems){
+                countTV.setText(String.valueOf(cartItems));
+            } else{
+                countTV.setText("");
+            }
+        }
+
+        if (redCircle != null) {
+            redCircle.setVisibility((cartItems > 0) ? View.VISIBLE : View.GONE);
+        }
     }
 
     public void updateAlertIcon() {
@@ -204,5 +229,29 @@ public class ShopActivity extends AppCompatActivity {
     public int getCartItemCount() {
         SharedPreferences sharedPreferences = getSharedPreferences("cart", MODE_PRIVATE);
         return sharedPreferences.getInt("cartItemCount", 0);
+    }
+
+    private void setAlarmManager(){
+        long repeatInterval = 6000;
+        long triggerTime = SystemClock.elapsedRealtime() + repeatInterval;
+
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        manager.setInexactRepeating(
+                AlarmManager.RTC_WAKEUP,
+                triggerTime,
+                repeatInterval,
+                pendingIntent
+        );
+
+        manager.cancel(pendingIntent);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        refreshAlertIcon();
     }
 }

@@ -10,8 +10,8 @@
 
         <ImageView
             android:id="@+id/itemImage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="400dp"
+            android:layout_height="200dp"
             android:adjustViewBounds="true" />
 
         <TextView
@@ -34,11 +34,23 @@
             android:text="@string/item_info_placeholder" />
 
         <TextView
-            android:id="@+id/price"
+            android:id="@+id/count"
             style="@style/ItemDetailText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/description"
+            android:padding="8dp"
+            android:textColor="@color/red"
+            android:layout_marginBottom="5dp"
+            android:layout_centerHorizontal="true"
+            />
+
+        <TextView
+            android:id="@+id/price"
+            style="@style/ItemDetailText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/count"
             android:layout_marginBottom="12dp"
             android:padding="8dp"
             android:textColor="@color/red"

@@ -92,6 +92,7 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
         private TextView mInfoText;
         private TextView mPriceText;
         private ImageView mItemImage;
+        private TextView mCount;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -100,6 +101,7 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
             mInfoText = itemView.findViewById(R.id.description);
             mItemImage = itemView.findViewById(R.id.itemImage);
             mPriceText = itemView.findViewById(R.id.price);
+            mCount = itemView.findViewById(R.id.count);
 
             itemView.findViewById(R.id.add_to_cart).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -122,6 +124,11 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
             mTitleText.setText(currentItem.getName());
             mInfoText.setText(currentItem.getInfo());
             mPriceText.setText(currentItem.getPrice());
+
+            if(currentItem.getCount() < 10){
+                mCount.setText("Már csak " + currentItem.getCount() + " db maradt!");
+            }
+
             Log.d("adapter", currentItem.getPrice());
 
             Glide.with(mContext).load(currentItem.getImageResource()).into(mItemImage);

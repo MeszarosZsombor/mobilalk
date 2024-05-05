@@ -3,23 +3,23 @@ package com.example.mobilalk;
 import java.io.Serializable;
 
 public class ShoppingItem implements Serializable {
-    private String id;
-
     private String name;
     private String info;
     private String desc;
     private String price;
     private int imageResource;
+    private int count;
 
     public ShoppingItem() {
     }
 
-    public ShoppingItem(String name, String info, String desc, String price, int imageResource) {
+    public ShoppingItem(String name, String info, String desc, String price, int imageResource, int count) {
         this.name = name;
         this.info = info;
         this.desc = desc;
         this.price = price;
         this.imageResource = imageResource;
+        this.count = count;
     }
 
     public String getName() {
@@ -42,11 +42,7 @@ public class ShoppingItem implements Serializable {
         return imageResource;
     }
 
-    public String __getId(){
-        return id;
-    }
-
-    public void setId(String id){
-        this.id = id;
+    public int getCount() {
+        return count;
     }
 }

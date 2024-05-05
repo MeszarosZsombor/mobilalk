@@ -2,17 +2,32 @@
 <resources>
     <string-array name="phone_name">
         <item>Samsung Galaxy S24</item>
+        <item>Samsung Galaxy S24 Ultra</item>
+        <item>Apple Iphone 15</item>
     </string-array>
     <string-array name="phone_info">
         <item>Samsung Galaxy S24 rovid leirasa</item>
+        <item>Samsung Galaxy S24 Ultra rovid leirasa</item>
+        <item>Apple Iphone 15 rovid leirasa</item>
     </string-array>
     <string-array name="phone_desc">
         <item>S24 hosszu leirasa</item>
+        <item>S24 Ultra hosszu leirasa</item>
+        <item>Apple Iphone 15 hosszu leirasa</item>
     </string-array>
     <string-array name="phone_price">
-        <item>500 000 Ft</item>
+        <item>250 000 Ft</item>
+        <item>450 000 Ft</item>
+        <item>315 000 Ft</item>
     </string-array>
     <string-array name="phone_image">
         <item>@drawable/galaxys24</item>
+        <item>@drawable/galaxys24ultra</item>
+        <item>@drawable/iphone15</item>
     </string-array>
+    <integer-array name="count">
+        <item>20</item>
+        <item>50</item>
+        <item>8</item>
+    </integer-array>
 </resources>
