@@ -15,6 +15,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 
@@ -24,7 +30,6 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
     private ArrayList<ShoppingItem> mShoppingItemData = new ArrayList<>();
     private ArrayList<ShoppingItem> mShoppingItemDataAll = new ArrayList<>();
     private Context mContext;
-    private int lastPosition = -1;
 
     ShoppingItemAdapter(Context context, ArrayList<ShoppingItem> itemsData) {
         this.mShoppingItemData = itemsData;
@@ -103,20 +108,15 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
             mPriceText = itemView.findViewById(R.id.price);
             mCount = itemView.findViewById(R.id.count);
 
-            itemView.findViewById(R.id.add_to_cart).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ((ShopActivity)mContext).updateAlertIcon();
-                }
+            itemView.findViewById(R.id.add_to_cart).setOnClickListener(view -> {
+                ShoppingItem currentItem = mShoppingItemData.get(getAdapterPosition());
+                ((ShopActivity)mContext).updateAlertIcon(currentItem);
             });
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(mContext, ShoppingItemActivity.class);
-                    intent.putExtra("item", mShoppingItemData.get(getAdapterPosition()));
-                    mContext.startActivity(intent);
-                }
+            itemView.setOnClickListener(view -> {
+                Intent intent = new Intent(mContext, ShoppingItemActivity.class);
+                intent.putExtra("item", mShoppingItemData.get(getAdapterPosition()));
+                mContext.startActivity(intent);
             });
         }
 
@@ -129,10 +129,7 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
                 mCount.setText("Már csak " + currentItem.getCount() + " db maradt!");
             }
 
-            Log.d("adapter", currentItem.getPrice());
-
             Glide.with(mContext).load(currentItem.getImageResource()).into(mItemImage);
-            Log.d(TAG, "bindTo: " + currentItem.getImageResource());
         }
     }
 }

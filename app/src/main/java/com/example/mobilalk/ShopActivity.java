@@ -19,7 +19,6 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.MenuItemCompat;
 import androidx.core.view.ViewCompat;
@@ -30,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -37,7 +37,7 @@ import java.util.ArrayList;
 
 public class ShopActivity extends AppCompatActivity {
 
-    private static final String LOG_TAG = ShopActivity.class.getName();
+    private static final String TAG = ShopActivity.class.getName();
     private FirebaseUser user;
 
     private RecyclerView recyclerView;
@@ -66,9 +66,9 @@ public class ShopActivity extends AppCompatActivity {
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null){
-            Log.d(LOG_TAG, "User logged in");
+            Log.d(TAG, "User logged in");
         }else{
-            Log.d(LOG_TAG, "User not logged in");
+            Log.d(TAG, "User not logged in");
             finish();
         }
 
@@ -81,6 +81,8 @@ public class ShopActivity extends AppCompatActivity {
 
         firestore = FirebaseFirestore.getInstance();
         collection = firestore.collection("Phones");
+
+        manager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
         setAlarmManager();
         queryData();
@@ -119,7 +121,7 @@ public class ShopActivity extends AppCompatActivity {
         String[] itemsDesc = getResources().getStringArray(R.array.phone_desc);
         int[] itemsCount = getResources().getIntArray(R.array.count);
         TypedArray itemsImageResource = getResources().obtainTypedArray(R.array.phone_image);
-        Log.d(LOG_TAG, itemsImageResource.toString());
+        Log.d(TAG, itemsImageResource.toString());
 
         for (int i = 0; i < itemsList.length; i++){
             collection.add(new ShoppingItem(
@@ -157,16 +159,17 @@ public class ShopActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Log.d(LOG_TAG,"onoptions");
+        Log.d(TAG,"onoptions");
         if (item.getItemId() == R.id.log_out){
             FirebaseAuth.getInstance().signOut();
             finish();
             return true;
         } else if (item.getItemId() == R.id.settings) {
-            Log.d(LOG_TAG, "Settings");
+            Intent intent = new Intent(ShopActivity.this, CartActivity.class);
+            startActivity(intent);
             return true;
         } else if (item.getItemId() == R.id.cart) {
-            Log.d(LOG_TAG, "Cart");
+            Log.d(TAG, "Cart");
             return true;
         } else{
             return super.onOptionsItemSelected(item);
@@ -177,7 +180,7 @@ public class ShopActivity extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu){
         final MenuItem alertMI = menu.findItem(R.id.cart);
         FrameLayout rootView = (FrameLayout) alertMI.getActionView();
-        Log.d(LOG_TAG, "rootview: " + rootView);
+        Log.d(TAG, "rootview: " + rootView);
 
         redCircle = (FrameLayout) rootView.findViewById(R.id.circle);
         countTV = (TextView) rootView.findViewById(R.id.count);
@@ -205,7 +208,7 @@ public class ShopActivity extends AppCompatActivity {
         }
     }
 
-    public void updateAlertIcon() {
+    public void updateAlertIcon(ShoppingItem item) {
         cartItems = getCartItemCount() + 1;
 
         if (countTV != null) {
@@ -224,6 +227,36 @@ public class ShopActivity extends AppCompatActivity {
         if (redCircle != null) {
             redCircle.setVisibility((cartItems > 0) ? View.VISIBLE : View.GONE);
         }
+
+        collection.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot doc : task.getResult()) {
+                    if (doc.toObject(ShoppingItem.class).getName().equals(item.getName())) {
+                        String id = doc.getId();
+
+                        DocumentReference itemRef = collection.document(id);
+
+                        itemRef.get().addOnSuccessListener(documentSnapshot -> {
+                            Long count = documentSnapshot.getLong("count");
+                            if (count != null && count > 0) {
+                                itemRef.update("count", count - 1).addOnSuccessListener(v -> {
+                                    item.setCount(count.intValue() - 1);
+
+                                    adapter.notifyDataSetChanged();
+                                });
+                            }
+                        }).addOnFailureListener(e -> {
+                            Log.e(TAG, "updateAlertIcon: ", e);
+                        });
+                    }
+                }
+            }
+        }).addOnFailureListener(e -> {
+            Log.e(TAG, "updateAlertIcon: ", e);
+        });
+
+
+
     }
 
     public int getCartItemCount() {
@@ -236,7 +269,7 @@ public class ShopActivity extends AppCompatActivity {
         long triggerTime = SystemClock.elapsedRealtime() + repeatInterval;
 
         Intent intent = new Intent(this, AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_MUTABLE);
 
         manager.setInexactRepeating(
                 AlarmManager.RTC_WAKEUP,

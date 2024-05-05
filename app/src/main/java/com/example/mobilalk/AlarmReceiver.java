@@ -7,6 +7,6 @@ import android.content.Intent;
 public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        new NotificationHelper(context).send("Várunk vissza további termékekkel!");
+        new NotificationHelper(context).send("Várunk vissza további ajánlatokkal!");
     }
 }
