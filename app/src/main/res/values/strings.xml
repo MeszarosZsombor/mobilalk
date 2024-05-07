@@ -22,4 +22,7 @@
     <string name="title_activity_shopping_item">ShoppingItemActivity</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="open_map">Térkép megnyitása</string>
+    <string name="view_more">Mutass többet</string>
+    <string name="remove">-</string>
+    <string name="add">+</string>
 </resources>

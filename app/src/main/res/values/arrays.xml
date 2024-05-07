@@ -4,30 +4,111 @@
         <item>Samsung Galaxy S24</item>
         <item>Samsung Galaxy S24 Ultra</item>
         <item>Apple Iphone 15</item>
+        <item>Apple Iphone 15 Pro</item>
+        <item>Apple Iphone 14</item>
+        <item>Apple Iphone 14 Pro Max</item>
+        <item>Apple Iphone 13</item>
+        <item>Nothing Phone 2a</item>
+        <item>Apple Iphone 13 Mini</item>
+        <item>Nothing Phone 2</item>
+        <item>Samsung Galaxy S23</item>
+        <item>Samsung Galaxy S23 Ultra</item>
     </string-array>
     <string-array name="phone_info">
-        <item>Samsung Galaxy S24 rovid leirasa</item>
-        <item>Samsung Galaxy S24 Ultra rovid leirasa</item>
-        <item>Apple Iphone 15 rovid leirasa</item>
+        <item>Megérkeztek a fejlesztések, amikre eddig vártál! Nagyobb kijelző. Nagyobb akkumulátor és nagyobb feldolgozási teljesítmény.</item>
+        <item>rovid leirasa Fedezd fel az új, strapabíró titán pajzsot, amit közvetlenül a keretbe építettünk! A titán ereje a kezedben.</item>
+        <item>eljárással gyártott üvegnek és az űrtechnológiai minőségű alumínium háznak köszönhetően az iphone 15 rendkívül tartós.</item>
+        <item>Titánból megformálva. Az iphone 15 pro az első iPhone, amelyhez űrtechnológiai minőségű titánt használtunk.</item>
+        <item>Apple Iphone 14 segít teljes kontroll alatt tartanod azt, hogy mit osztasz meg és kivel.</item>
+        <item>Apple Iphone 14 Pro Max Az Ütközésészlelés funkció segélyhívást indít helyetted, amikor te nem tudsz.</item>
+        <item>Apple Iphone 13 mindehhez kevesebb energiát fogyaszt, mint valaha.</item>
+        <item>Nothing Phone 2a mobiltelefon szerves részét képezi az okostelefonok csoportjának érintőképernyővel.</item>
+        <item>Éjszakai módban a kamera automatikusan a gyenge fényviszonyokhoz igazítja a beállításokat, hogy felvételeid világosak, élesek és színtelítettek legyenek.</item>
+        <item>Nothing Phone 2 Egy olyan világ számára, amely több időre vágyik, és kevesebb képernyőre, elhoztuk a Glyph Interface-t.</item>
+        <item>Célozz és lőjj! Örökítsd meg a pillanatot nappal és éjszaka! Vágj neki a kalandoknak a professzionális kamerával a kezedben, ami nagy felbontású érzékelővel és intelligens, fényelnyelő</item>
+        <item>Maradj két lábbal a földön a természet ihlette árnyalatokkal! A tónusok mindegyike elegáns és előkelő.</item>
     </string-array>
     <string-array name="phone_desc">
-        <item>S24 hosszu leirasa</item>
-        <item>S24 Ultra hosszu leirasa</item>
-        <item>Apple Iphone 15 hosszu leirasa</item>
+        <item>A Samsung Galaxy S24 az innováció és a modern technológia zászlóshajója. A készülék kiemelkedő jellemzői közé tartozik egy rendkívül nagy méretű, mégis ultravékony kerettel rendelkező 6,2 hüvelykes FHD+ AMOLED kijelző, ami garantálja a lenyűgöző megtekintési élményt, több képernyőfelülettel. A kijelző színeit és kontrasztját a Láthatóság javító funkció optimalizálja, így minden körülmények között tökéletes képminőséget biztosít.
+A telefon további figyelemre méltó jellemzői között szerepel egy nagyobb akkumulátor, amely hosszabb üzemidőt biztosít, valamint egy fejlett feldolgozási kapacitás, amely gyors és zökkenőmentes működést garantál akár több alkalmazás egyidejű használata során is. Az új és továbbfejlesztett hőelvezető rendszer, egy nagyobb méretű párakamra, amely integrált folyadéktípusú hőátadó anyaggal van ellátva, biztosítja, hogy a telefon hűvösen és hatékonyan működjön intenzív használat, például játékok vagy nagy teljesítményű alkalmazások futtatása közben.
+</item>
+        <item>S24 Ultra hosszu leirasa  Fedezd fel a titán erejét az új, strapabíró titán pajzzsal, amely közvetlenül a keretbe van építve, garantálva a maximális tartósságot és védelmet. A Corning® Gorilla® Armor technológia még tovább fokozza a készülék ellenálló képességét a karcolásokkal szemben, így a kijelző hosszú ideig megőrzi gyönyörű állapotát. A készülék csepp- és porálló kialakítása biztosítja, hogy sem víz, sem por ne árthasson neki, így bátran használhatod minden körülmények között.
+A készülék dizájnját a természet ihlette, a titán színopciók lágy szatén árnyalatai olyan érzetet keltenek, mintha a telefon egy finoman polírozott drágakő lenne. Az integrált S Pen tovább színesíti a Galaxy Note örökségét, új lehetőségeket nyitva a felhasználók előtt kreatív és produktív tevékenységek terén.
+        </item>
+        <item>Az új Dynamic Island funkcióval a készülék intuitívan kiemeli az értesítéseket és az élő tevékenységeket, így soha nem maradsz le semmiről, akkor sem, ha épp más feladatokkal vagy elfoglalva. Ez a megoldás a készülék felső részén dinamikusan jelenik meg, és intelligensen alkalmazkodik az aktuális igényekhez.
+A készülék hátlapja anyagában színezett üvegből készül, amely nemcsak masszív, hanem figyelemfelkeltő dizájnt is biztosít. A színezési folyamat során rendkívül kis méretű fémionokat használunk, mindegyik színhez egyedi keveréket alkalmazva, ami a színek kémiájának egyedülálló aspektusát képviseli.
+</item>
+        <item>Az iPhone 15 Pro az Apple történetében először alkalmaz űrtechnológiai minőségű titánötvözetet, amely a Mars-missziók űrjárműveihez is használt anyagból készült. A titán kivételes szilárdsága és könnyűsége révén ez a modell az eddigi legkönnyebb Pro készülék. A titánszegélyt egy iparágban újdonságnak számító szilárdtest-diffúziós technológiával rögzítjük egy teljesen új, 100%-ban újrahasznosított alumíniumból készült belső kerethez, így a két fém közötti kapcsolat rendkívül erős lesz.
+A kijelző technológia is fejlett: a ProMotion technológiával felszerelt Super Retina XDR kijelzője dinamikusan állítja be a frissítési frekvenciát a felhasználás szükségleteihez igazodva, energiahatékonyságot növelve. A Dynamic Island funkcióval az értesítések és a tevékenységek mindig szem előtt maradnak, miközben a mindig bekapcsolt kijelző lehetővé teszi, hogy a zárolási képernyő tartalmai folyamatosan láthatók legyenek anélkül, hogy megérintenéd a készüléket.
+</item>
+        <item>Az iOS 16 új lehetőségeket kínál arra, hogy teljesen személyre szabd az iPhone zárolási képernyőjét. Képekkel és új rétegekkel teheted egyedivé, míg a tevékenységgyűrűk és az értesítések segítségével naprakész maradhatsz kedvenc alkalmazásaid eseményeivel kapcsolatban. Ezen felül irányíthatod, hogy mely alkalmazások követhetik a tevékenységedet, így garantálva, hogy az adatmegosztás teljesen a te kezedben maradjon.
+Az iPhone 14 autóbaleset-érzékelő funkciói magukban foglalnak egy új gyorsulásmérőt, amely 256 g-ig érzékeli az extrém gyorsulást, valamint egy dinamikatartományú giroszkópot, amely figyeli a váratlan irányváltásokat. A barométer a légnyomásváltozásokat detektálja, míg a mikrofon az ütközések hangját azonosítja, a hangfeldolgozás helyben, az eszközön történik.
+</item>
+        <item>Az iPhone új generációja valódi technológiai csodát hoz a kezeink közé, bevezetve egy sor újítást, amelyek megkönnyítik mindennapi életünket és egyben védelmet is nyújtanak. A Dynamic Island, egy forradalmian új Apple-innováció, egyesíti a hardvert és a szoftvert, létrehozva egy dinamikus felületet, amely intelligensen kezeli az értesítéseket, a zenelejátszást és még a sporteredményeket is anélkül, hogy félbe kellene szakítanod aktuális tevékenységedet.
+A biztonság terén az iPhone új mérföldkövet állít fel: a fejlett ütközésészlelési rendszer azonnali segélyhívást indít súlyos autóbaleset esetén, miközben a barométer, a gyorsulásmérő és a mikrofon együttesen érzékeli a potenciális veszélyhelyzeteket, a laboratóriumi töréstesztek által megerősített pontossággal.
+</item>
+        <item>A legújabb iPhone modellben megvalósult kamerafejlesztés mérföldkő az okostelefon-technológiában. A tervezők és mérnökök előtt álló kihívás, hogy a lehető legkisebb helyen helyezzenek el egy rendkívül fejlett kamerarendszert, újszerű megoldásokat igényelt. Az objektívek 45 fokos elforgatása lehetővé tette, hogy az újratervezett kameraegységben helyet kapjon a valaha volt legnagyobb érzékelő, amit széles látószögű kamerába építettek. Ez a megoldás nemcsak helytakarékos, hanem a szenzormozgatásos optikai képstabilizáló technológiának is teret biztosít, így még stabilabb képeket garantál.
+Az ultraszéles látószögű kamera gyorsabb érzékelővel rendelkezik, ami a sötétebb képrészletek részletgazdagabb megjelenítését teszi lehetővé. Emellett a széles látószögű kamera 47%-kal több fényt enged be, javítva ezzel a fotók és videók minőségét mindenféle fényviszony mellett.
+</item>
+        <item>A Nothing Phone (2a) egy izgalmas újdonság az okostelefonok piacán, amely kiemelkedik modern technológiájával és használhatóságával. A készülék 6,7 hüvelykes AMOLED kijelzője tágas megjelenítőfelületet kínál, amely tökéletes választás lehet a nagy telefonok szerelmeseinek. Az éles és színgazdag képmegjelenítés mellett a telefon tökéletes társ lehet filmnézéshez vagy játékhoz is.
+A Nothing Phone (2a) dual SIM kártya támogatásával és 8 GB RAM-mal rendelkezik, ami sima és gyors működést biztosít akár a legigényesebb alkalmazások futtatásakor is. A MediaTek Dimensity 7200 Pro nyolcmagos processzor elég erős ahhoz, hogy akadásmentesen kezelje a multitaskingot és az energiazabáló játékokat is.
+</item>
+        <item>Az iPhone legújabb változatában számos kamerarendszer fejlesztés történt, amelyek radikálisan javítják a fényképezési és videózás élményét. A kamerák 45 fokban elforgatott elrendezése lehetővé tette a dupla kamera-rendszer újragondolását, beleértve a széles látószögű kamera jelentős érzékelő-frissítését is, amely 47%-kal több fényt enged be. Ezáltal még sötét körülmények között is részletgazdag képek készítésére képes. Emellett az új ultraszéles látószögű kamera gyorsabb érzékelővel rendelkezik, amely fokozza a képminőséget és a felhasználói élményt.
+Az új szenzormozgatásos optikai képstabilizátor technológia biztosítja, hogy a képek éles maradjanak még akkor is, ha a felhasználó vagy a készülék mozgásban van. Ez különösen hasznos lehet akár sportesemények, akár gyors mozgású városi jelenetek rögzítésekor.
+</item>
+        <item>A Nothing Phone (2) új generációja egy olyan okostelefon, amely a technológia és a felhasználóbarát funkciók harmonikus egyesítésével készült. A készülék legizgalmasabb újítása a Glyph Interface, amely egyedülálló módon használja a fény- és hangsorozatokat az értesítések és hívások kezelésére, így lehetővé téve, hogy a felhasználók kevesebb időt töltsenek a képernyő előtt.
+A Nothing Phone (2) mindennapi funkcionalitását a számos integrált Glyph szegmensek tovább növelik, amelyek között megtalálhatóak időzítők, akkumulátormérő kijelzők és hangerő-ellenőrzők is. Ezek a funkciók nemcsak praktikusak, de a telefon használatát is intuitívvá teszik. A Glyph értesítések révén a felhasználók tisztában lehetnek a fontos eseményekkel anélkül, hogy állandóan a képernyőt kellene bámulniuk.
+</item>
+        <item>Ez az új mobiltelefon a csúcstechnológia és a felhasználói élmény tökéletes kombinációját kínálja, amely azok számára lett tervezve, akik nem elégszenek meg a mindennapi fotózási lehetőségekkel, hanem a különleges, éjszakai körülmények közötti fotózásra is vágyakoznak.
+Professzionális Kamerarendszer: Az új készülék kiemelkedik nagy felbontású érzékelőjével és intelligens, fényelnyelő pixeleivel, amelyek tisztább felvételeket tesznek lehetővé még alacsony fényviszonyok között is. A dupla pixel technológiával felszerelt első kamera gyors és pontos fókuszálást biztosít, míg a hátlapi széles látószögű 50 megapixeles kamera és a részletfeljavító technológia együttesen biztosítják, hogy a képek minden apró részletét megörökíthesd.
+</item>
+
+        <item>Ez az új mobiltelefon a csúcstechnológia és a felhasználói élmény tökéletes kombinációját kínálja, amely azok számára lett tervezve, akik nem elégszenek meg a mindennapi fotózási lehetőségekkel, hanem a különleges, éjszakai körülmények közötti fotózásra is vágyakoznak.
+Professzionális Kamerarendszer: Az új készülék kiemelkedik nagy felbontású érzékelőjével és intelligens, fényelnyelő pixeleivel, amelyek tisztább felvételeket tesznek lehetővé még alacsony fényviszonyok között is. A dupla pixel technológiával felszerelt első kamera gyors és pontos fókuszálást biztosít, míg a hátlapi széles látószögű 50 megapixeles kamera és a részletfeljavító technológia együttesen biztosítják, hogy a képek minden apró részletét megörökíthesd.
+</item>
+
+
     </string-array>
     <string-array name="phone_price">
         <item>250 000 Ft</item>
         <item>450 000 Ft</item>
         <item>315 000 Ft</item>
+        <item>440 000 Ft</item>
+        <item>270 000 Ft</item>
+        <item>470 000 Ft</item>
+        <item>230 000 Ft</item>
+        <item>130 000 Ft</item>
+        <item>270 000 Ft</item>
+        <item>215 000 Ft</item>
+        <item>200 000 Ft</item>
+        <item>220 000 Ft</item>
     </string-array>
     <string-array name="phone_image">
         <item>@drawable/galaxys24</item>
         <item>@drawable/galaxys24ultra</item>
         <item>@drawable/iphone15</item>
+        <item>@drawable/iphone15pro</item>
+        <item>@drawable/iphone14</item>
+        <item>@drawable/iphone14promax</item>
+        <item>@drawable/iphone13</item>
+        <item>@drawable/phone2a</item>
+        <item>@drawable/iphone13mini</item>
+        <item>@drawable/phone2</item>
+        <item>@drawable/galaxys23</item>
+        <item>@drawable/galaaxys23ultra</item>
     </string-array>
     <integer-array name="count">
         <item>20</item>
         <item>50</item>
         <item>8</item>
+        <item>22</item>
+        <item>87</item>
+        <item>222</item>
+        <item>3</item>
+        <item>43</item>
+        <item>76</item>
+        <item>2</item>
+        <item>15</item>
+        <item>85</item>
     </integer-array>
 </resources>

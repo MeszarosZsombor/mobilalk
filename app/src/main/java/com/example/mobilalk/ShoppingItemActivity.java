@@ -1,10 +1,7 @@
 package com.example.mobilalk;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,23 +11,27 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
-import androidx.core.view.MenuItemCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.util.ArrayList;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
-import jp.wasabeef.glide.transformations.ColorFilterTransformation;
 
 public class ShoppingItemActivity extends AppCompatActivity {
     public static final String TAG = ShoppingItemActivity.class.getName();
@@ -39,6 +40,8 @@ public class ShoppingItemActivity extends AppCompatActivity {
     private FrameLayout redCircle;
     private TextView countTV;
     private int cartItems;
+    private CollectionReference collection;
+    private ShoppingItemAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,8 +106,11 @@ public class ShoppingItemActivity extends AppCompatActivity {
         addToCart = (Button) findViewById(R.id.add_to_cart);
 
         addToCart.setOnClickListener(v -> {
-            updateAlertIcon();
+            updateAlertIcon(name);
         });
+
+        collection = FirebaseFirestore.getInstance().collection("Phones");
+        adapter = new ShoppingItemAdapter(this, new ArrayList<>());
     }
 
     @Override
@@ -128,7 +134,8 @@ public class ShoppingItemActivity extends AppCompatActivity {
             Log.d(TAG, "Settings");
             return true;
         } else if (item.getItemId() == R.id.cart) {
-            Log.d(TAG, "Cart");
+            Intent intent = new Intent(ShoppingItemActivity.this, CartActivity.class);
+            startActivity(intent);
             return true;
         } else{
             return super.onOptionsItemSelected(item);
@@ -167,7 +174,7 @@ public class ShoppingItemActivity extends AppCompatActivity {
         }
     }
 
-    public void updateAlertIcon() {
+    public void updateAlertIcon(String phoneName) {
         cartItems = getCartItemCount() + 1;
 
         if (countTV != null) {
@@ -186,6 +193,44 @@ public class ShoppingItemActivity extends AppCompatActivity {
         if (redCircle != null) {
             redCircle.setVisibility((cartItems > 0) ? View.VISIBLE : View.GONE);
         }
+
+        collection.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot doc : task.getResult()) {
+                    if (doc.toObject(ShoppingItem.class).getName().equals(phoneName)) {
+                        String id = doc.getId();
+
+                        DocumentReference itemRef = collection.document(id);
+
+                        itemRef.get().addOnSuccessListener(documentSnapshot -> {
+                            Long count = documentSnapshot.getLong("count");
+                            if (count != null && count > 0) {
+                                itemRef.update("count", count - 1).addOnSuccessListener(v -> {
+                                    doc.toObject(ShoppingItem.class).setCount(count.intValue() - 1);
+
+                                    SharedPreferences sharedPreferencesP = getSharedPreferences("phones", MODE_PRIVATE);
+                                    SharedPreferences.Editor editorP = sharedPreferencesP.edit();
+                                    int itemCount = getCartItemCount(phoneName) + 1;
+                                    editorP.putInt(phoneName, itemCount);
+                                    editorP.commit();
+
+                                    runOnUiThread(() -> adapter.notifyDataSetChanged());
+                                });
+                            }
+                        }).addOnFailureListener(e -> {
+                            Log.e(TAG, "updateAlertIcon: ", e);
+                        });
+                    }
+                }
+            }
+        }).addOnFailureListener(e -> {
+            Log.e(TAG, "updateAlertIcon: ", e);
+        });
+    }
+
+    public int getCartItemCount(String phoneName){
+        SharedPreferences sharedPreferences = getSharedPreferences("phones", MODE_PRIVATE);
+        return sharedPreferences.getInt(phoneName, 0);
     }
 
     public int getCartItemCount() {

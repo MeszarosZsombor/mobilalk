@@ -85,4 +85,5 @@ dependencies {
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
     implementation("jp.wasabeef:glide-transformations:4.3.0")
+    implementation("com.google.code.gson:gson:2.10.1")
 }

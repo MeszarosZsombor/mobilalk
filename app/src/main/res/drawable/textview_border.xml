@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#E68EF38B" /> <!-- Háttérszín -->
+    <corners android:radius="10dp" /> <!-- Sarok lekerekítés -->
+<!--    <stroke android:color="#E68EF38B" android:width="2dp"/> &lt;!&ndash; Keret színe és vastagsága &ndash;&gt;-->
+</shape>

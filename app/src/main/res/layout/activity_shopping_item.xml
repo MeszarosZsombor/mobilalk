@@ -3,6 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -75,22 +81,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/mapLayout"
-            android:layout_marginBottom="12dp"
             android:padding="8dp"
             android:textColor="@color/red"
             android:layout_centerHorizontal="true"/>
 
+    </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:padding="16dp">
 
         <Button
             android:id="@+id/add_to_cart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/price"
             android:text="@string/addToCart"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerInParent="true"/>
+        </RelativeLayout>
 
-
-
-    </RelativeLayout>
+    </LinearLayout>
 
 </ScrollView>

@@ -23,6 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapter.ViewHolder> implements Filterable {
 
@@ -30,6 +31,7 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
     private ArrayList<ShoppingItem> mShoppingItemData = new ArrayList<>();
     private ArrayList<ShoppingItem> mShoppingItemDataAll = new ArrayList<>();
     private Context mContext;
+
 
     ShoppingItemAdapter(Context context, ArrayList<ShoppingItem> itemsData) {
         this.mShoppingItemData = itemsData;
@@ -42,6 +44,11 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new ViewHolder(LayoutInflater.from(mContext)
                     .inflate(R.layout.list_items, parent, false));
+    }
+
+    public void setData(List<ShoppingItem> itemList) {
+        this.mShoppingItemData = new ArrayList<>(itemList);
+        this.mShoppingItemDataAll = new ArrayList<>(itemList);
     }
 
     @Override
@@ -110,7 +117,7 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
 
             itemView.findViewById(R.id.add_to_cart).setOnClickListener(view -> {
                 ShoppingItem currentItem = mShoppingItemData.get(getAdapterPosition());
-                ((ShopActivity)mContext).updateAlertIcon(currentItem);
+                ((ShopActivity)mContext).updateAlertIcon(currentItem.getName());
             });
 
             itemView.setOnClickListener(view -> {

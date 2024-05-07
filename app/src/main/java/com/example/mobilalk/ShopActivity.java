@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -26,14 +27,18 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ShopActivity extends AppCompatActivity {
 
@@ -50,6 +55,8 @@ public class ShopActivity extends AppCompatActivity {
     private TextView countTV;
     private int cartItems;
     private int gridNumber = 2;
+    private int limit = 4;
+    private Button viewMore;
 
     private AlarmManager manager;
 
@@ -83,6 +90,8 @@ public class ShopActivity extends AppCompatActivity {
         collection = firestore.collection("Phones");
 
         manager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        viewMore = findViewById(R.id.viewMore);
 
         setAlarmManager();
         queryData();
@@ -124,14 +133,14 @@ public class ShopActivity extends AppCompatActivity {
         Log.d(TAG, itemsImageResource.toString());
 
         for (int i = 0; i < itemsList.length; i++){
-            collection.add(new ShoppingItem(
-                    itemsList[i],
-                    itemsInfo[i],
-                    itemsDesc[i],
-                    itemsPrice[i],
-                    itemsImageResource.getResourceId(i, 0),
-                    itemsCount[i]
-            ));
+                collection.add(new ShoppingItem(
+                        itemsList[i],
+                        itemsInfo[i],
+                        itemsDesc[i],
+                        itemsPrice[i],
+                        itemsImageResource.getResourceId(i, 0),
+                        itemsCount[i]
+                ));
         }
 
         itemsImageResource.recycle();
@@ -141,20 +150,36 @@ public class ShopActivity extends AppCompatActivity {
     private void queryData(){
         itemList.clear();
 
-        collection.orderBy("name").limit(10).get().addOnSuccessListener(queryDocumentSnapshots -> {
+        collection.orderBy("name").get().addOnSuccessListener(queryDocumentSnapshots -> {
             for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                 ShoppingItem item = document.toObject(ShoppingItem.class);
-                itemList.add(item);
+                if(item.getCount() > 0) {
+                    itemList.add(item);
+                }
             }
 
             if (itemList.size() == 0) {
                 initializeData();
                 queryData();
+            } else {
+                displayData();
             }
-
-            adapter.notifyDataSetChanged();
         });
 
+        viewMore.setOnClickListener(v -> {
+            limit += 4;
+            displayData();
+        });
+    }
+
+    private void displayData() {
+        List<ShoppingItem> displayList = new ArrayList<>(itemList.subList(0, Math.min(limit, itemList.size())));
+        adapter.setData(displayList);
+        adapter.notifyDataSetChanged();
+
+        if(limit >= itemList.size()){
+            viewMore.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -165,11 +190,10 @@ public class ShopActivity extends AppCompatActivity {
             finish();
             return true;
         } else if (item.getItemId() == R.id.settings) {
-            Intent intent = new Intent(ShopActivity.this, CartActivity.class);
-            startActivity(intent);
             return true;
         } else if (item.getItemId() == R.id.cart) {
-            Log.d(TAG, "Cart");
+            Intent intent = new Intent(ShopActivity.this, CartActivity.class);
+            startActivity(intent);
             return true;
         } else{
             return super.onOptionsItemSelected(item);
@@ -208,7 +232,7 @@ public class ShopActivity extends AppCompatActivity {
         }
     }
 
-    public void updateAlertIcon(ShoppingItem item) {
+    public void updateAlertIcon(String phoneName) {
         cartItems = getCartItemCount() + 1;
 
         if (countTV != null) {
@@ -231,7 +255,7 @@ public class ShopActivity extends AppCompatActivity {
         collection.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot doc : task.getResult()) {
-                    if (doc.toObject(ShoppingItem.class).getName().equals(item.getName())) {
+                    if (doc.toObject(ShoppingItem.class).getName().equals(phoneName)) {
                         String id = doc.getId();
 
                         DocumentReference itemRef = collection.document(id);
@@ -240,9 +264,16 @@ public class ShopActivity extends AppCompatActivity {
                             Long count = documentSnapshot.getLong("count");
                             if (count != null && count > 0) {
                                 itemRef.update("count", count - 1).addOnSuccessListener(v -> {
-                                    item.setCount(count.intValue() - 1);
+                                    doc.toObject(ShoppingItem.class).setCount(count.intValue() - 1);
 
-                                    adapter.notifyDataSetChanged();
+                                    runOnUiThread(() -> adapter.notifyDataSetChanged());
+                                    queryData();
+
+                                    SharedPreferences sharedPreferencesP = getSharedPreferences("phones", MODE_PRIVATE);
+                                    SharedPreferences.Editor editorP = sharedPreferencesP.edit();
+                                    int itemCount = getCartItemCount(phoneName) + 1;
+                                    editorP.putInt(phoneName, itemCount);
+                                    editorP.commit();
                                 });
                             }
                         }).addOnFailureListener(e -> {
@@ -255,8 +286,11 @@ public class ShopActivity extends AppCompatActivity {
             Log.e(TAG, "updateAlertIcon: ", e);
         });
 
+    }
 
-
+    public int getCartItemCount(String phoneName){
+        SharedPreferences sharedPreferences = getSharedPreferences("phones", MODE_PRIVATE);
+        return sharedPreferences.getInt(phoneName, 0);
     }
 
     public int getCartItemCount() {
