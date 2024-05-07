@@ -23,4 +23,12 @@ public class CartItem {
     public void setCount(int count) {
         this.count = count;
     }
+
+    @Override
+    public String toString() {
+        return "CartItem{" +
+                "phoneName='" + name + '\'' +
+                ", count=" + count +
+                '}';
+    }
 }

@@ -43,6 +43,10 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
         holder.bindTo(currentItem);
     }
 
+    public void setShoppingItems(List<CartItem> newCartItems){
+        this.mCartItems = newCartItems;
+    }
+
     @Override
     public int getItemCount() {
         return mCartItems.size();
@@ -64,11 +68,15 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
             mPriceText = itemView.findViewById(R.id.price);
             mCount = itemView.findViewById(R.id.count);
 
-//            itemView.setOnClickListener(view -> {
-//                Intent intent = new Intent(mContext, ShoppingItemActivity.class);
-//                intent.putExtra("item", mCartItems.get(getAdapterPosition()));
-//                mContext.startActivity(intent);
-//            });
+            itemView.findViewById(R.id.add_to_cart).setOnClickListener(view -> {
+                CartItem currentItem = mCartItems.get(getAdapterPosition());
+                ((CartActivity)mContext).updateCart(currentItem, 1);
+            });
+
+            itemView.findViewById(R.id.delete).setOnClickListener(view -> {
+                CartItem currentItem = mCartItems.get(getAdapterPosition());
+                ((CartActivity)mContext).updateCart(currentItem, 0);
+            });
         }
 
         void bindTo(CartItem currentItem){
