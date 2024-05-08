@@ -3,6 +3,9 @@ package com.example.mobilalk;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +21,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +31,15 @@ public class CartActivity extends AppCompatActivity {
     public static final String TAG = CartActivity.class.getName();
 
     private int cartItems;
+    private TextView totalTV;
 
     private List<CartItem> cartItemsList;
 
     private CollectionReference collection;
 
     private CartItemAdapter adapter;
+
+    private LinearLayout layout;
 
     private MutableLiveData<List<CartItem>> shoppingItemsLiveData = new MutableLiveData<>();
 
@@ -52,6 +59,9 @@ public class CartActivity extends AppCompatActivity {
 
         cartItemsList = new ArrayList<>();
 
+        layout = findViewById(R.id.layout);
+
+        totalTV = findViewById(R.id.sumPrice);
         updateItemsList();
 
         adapter = new CartItemAdapter(this, cartItemsList);
@@ -73,25 +83,44 @@ public class CartActivity extends AppCompatActivity {
         shoppingItemsLiveData.setValue(cartItemsList);
     }
 
+
+    public void setTotalAmount() {
+        int totalAmount = 0;
+
+        for (CartItem item: cartItemsList) {
+            totalAmount += item.sum();
+        }
+
+        if(totalAmount > 0) {
+            layout.setVisibility(View.VISIBLE);
+            totalTV.setText(String.valueOf(String.format("%,d Ft", totalAmount).replace(",", " ")));
+        }else{
+            layout.setVisibility(View.INVISIBLE);
+        }
+    }
+
     public void updateItemsList(){
         SharedPreferences sharedPreferences = getSharedPreferences("phones", MODE_PRIVATE);
         Map<String, ?> phones = sharedPreferences.getAll();
 
-        Log.d(TAG, "updateItemsList: " + phones);
-
         cartItemsList.clear();
         for (Map.Entry<String, ?> entry : phones.entrySet()) {
             String phoneName = entry.getKey();
-            int count = (Integer) entry.getValue();
+            String jsonString = (String) entry.getValue();
+            int[] json = new Gson().fromJson(jsonString, int[].class);
+            int count = json[0];
+            int price = json[1];
             if(count != 0) {
-                cartItemsList.add(new CartItem(phoneName, count));
+                cartItemsList.add(new CartItem(phoneName, count, price));
             }
         }
-        Log.d(TAG, "updateItemsList: " + cartItemsList);
+
+        setTotalAmount();
     }
 
     public void updateCart(CartItem currentItem, int i) {
         cartItems = getCartItemCount();
+        Log.d(TAG, "updateCart: " + cartItems);
 
         cartItemsList.stream()
                 .filter(item -> item.getName().equals(currentItem.getName()))
@@ -109,7 +138,8 @@ public class CartActivity extends AppCompatActivity {
                     }
 
                     SharedPreferences sharedPreferences = getSharedPreferences("cart", MODE_PRIVATE);
-                    sharedPreferences.edit().putInt("cartItemCount", cartItems + (i == 1 ? 1 : -1)).apply();
+                    int countItem = cartItems + (i == 1 ? 1 : -1);
+                    sharedPreferences.edit().putInt("cartItemCount", countItem).apply();
 
                     collection.get().addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
@@ -121,7 +151,7 @@ public class CartActivity extends AppCompatActivity {
                                     itemRef.get().addOnSuccessListener(documentSnapshot -> {
                                         Long count = documentSnapshot.getLong("count");
                                         if (count != null && count > 0) {
-                                            itemRef.update("count", count + (i == 1 ? 1 : -1)).addOnSuccessListener(v -> {
+                                            itemRef.update("count", count + (i == 1 ? -1 : 1)).addOnSuccessListener(v -> {
                                                 adapter.notifyDataSetChanged();
 
                                             });
@@ -131,9 +161,13 @@ public class CartActivity extends AppCompatActivity {
                             }
                         }
                     });
+
                     SharedPreferences sharedPreferencesP = getSharedPreferences("phones", MODE_PRIVATE);
                     SharedPreferences.Editor editorP = sharedPreferencesP.edit();
-                    editorP.putInt(currentItem.getName(), currentCount).apply();
+                    int price = item.getPrice();
+                    int[] asd = {countItem, price};
+                    String json = new Gson().toJson(asd);
+                    editorP.putString(currentItem.getName(), json).apply();
 
                     updateShoppingItems();
                     updateItemsList();

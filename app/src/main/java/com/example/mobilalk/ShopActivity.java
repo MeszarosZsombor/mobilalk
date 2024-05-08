@@ -39,6 +39,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ShopActivity extends AppCompatActivity {
 
@@ -278,7 +279,11 @@ public class ShopActivity extends AppCompatActivity {
                                     SharedPreferences sharedPreferencesP = getSharedPreferences("phones", MODE_PRIVATE);
                                     SharedPreferences.Editor editorP = sharedPreferencesP.edit();
                                     int itemCount = getCartItemCount(phoneName) + 1;
-                                    editorP.putInt(phoneName, itemCount);
+                                    String priceStr = doc.toObject(ShoppingItem.class).getPrice();
+                                    priceStr = priceStr.replace(" ", "").replace("Ft", "");
+                                    int[] asd = {itemCount, Integer.parseInt(priceStr)};
+                                    String json = new Gson().toJson(asd);
+                                    editorP.putString(phoneName, json);
                                     editorP.commit();
                                 });
                             }
@@ -296,7 +301,18 @@ public class ShopActivity extends AppCompatActivity {
 
     public int getCartItemCount(String phoneName){
         SharedPreferences sharedPreferences = getSharedPreferences("phones", MODE_PRIVATE);
-        return sharedPreferences.getInt(phoneName, 0);
+        Map<String, ?> phones = sharedPreferences.getAll();
+        int count = 0;
+        String jsonString;
+
+        for (Map.Entry<String, ?> entry : phones.entrySet()) {
+            if (phoneName.equals(entry.getKey())) {
+                jsonString = (String) entry.getValue();
+                int[] json = new Gson().fromJson(jsonString, int[].class);
+                count = json[0];
+            }
+        }
+        return count;
     }
 
     public int getCartItemCount() {

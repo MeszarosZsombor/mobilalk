@@ -1,5 +1,6 @@
 package com.example.mobilalk;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -24,11 +25,16 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
 
     private Context mContext;
     private List<CartItem> mCartItems;
+//    private TotalAmountListener activity;
 
     CartItemAdapter(Context context, List<CartItem> cartItems){
         this.mContext = context;
         this.mCartItems = cartItems;
     }
+
+//    public void setActivity(Activity activity){
+//        this.activity = (TotalAmountListener) activity;
+//    }
     @NonNull
     @Override
     public CartItemAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -42,6 +48,24 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
         CartItem currentItem = mCartItems.get(position);
         holder.bindTo(currentItem);
     }
+
+
+//    public int total(){
+//        for (CartItem item: mCartItems) {
+//            totalAmount = item.sum();
+//        }
+//        return totalAmount;
+//    }
+//
+//    public interface TotalAmountListener {
+//        void setTotalAmount(int totalAmount);
+//    }
+//
+//    public void onTotalAmountChanged(int totalAmount){
+//        if (activity != null) {
+//            activity.setTotalAmount(totalAmount);
+//        }
+//    }
 
     public void setShoppingItems(List<CartItem> newCartItems){
         this.mCartItems = newCartItems;
@@ -89,7 +113,6 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
                         String priceStr = item.getPrice();
                         int price = Integer.parseInt(priceStr.replace(" Ft", "").replace(" ", ""));
                         int count = currentItem.getCount();
-
                         mPriceText.setText(String.format("%,d Ft", price * count).replace(",", " "));
                         mCount.setText(String.valueOf(count) + " db");
                         Glide.with(mContext).load(item.getImageResource()).into(mItemImage);
