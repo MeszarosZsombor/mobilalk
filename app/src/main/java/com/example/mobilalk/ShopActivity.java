@@ -186,6 +186,8 @@ public class ShopActivity extends AppCompatActivity {
 
         if(limit >= itemList.size()){
             viewMore.setVisibility(View.GONE);
+
+            queryData();
         }
     }
 

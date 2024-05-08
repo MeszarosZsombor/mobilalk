@@ -102,6 +102,7 @@ public class CartActivity extends AppCompatActivity {
     public void updateItemsList(){
         SharedPreferences sharedPreferences = getSharedPreferences("phones", MODE_PRIVATE);
         Map<String, ?> phones = sharedPreferences.getAll();
+        Log.d(TAG, "updateItemsList: " + phones);
 
         cartItemsList.clear();
         for (Map.Entry<String, ?> entry : phones.entrySet()) {
@@ -127,6 +128,7 @@ public class CartActivity extends AppCompatActivity {
                 .findFirst()
                 .ifPresent(item -> {
                     int currentCount = item.getCount();
+                    Log.d(TAG, "currentcount: " + currentCount);
                     if (i == 1) {
                         currentCount++;
                         item.setCount(currentCount);
@@ -151,10 +153,7 @@ public class CartActivity extends AppCompatActivity {
                                     itemRef.get().addOnSuccessListener(documentSnapshot -> {
                                         Long count = documentSnapshot.getLong("count");
                                         if (count != null && count > 0) {
-                                            itemRef.update("count", count + (i == 1 ? -1 : 1)).addOnSuccessListener(v -> {
-                                                adapter.notifyDataSetChanged();
-
-                                            });
+                                            itemRef.update("count", count + (i == 1 ? -1 : 1)).addOnSuccessListener(v -> {adapter.notifyDataSetChanged();});
                                         }
                                     });
                                 }
@@ -165,18 +164,13 @@ public class CartActivity extends AppCompatActivity {
                     SharedPreferences sharedPreferencesP = getSharedPreferences("phones", MODE_PRIVATE);
                     SharedPreferences.Editor editorP = sharedPreferencesP.edit();
                     int price = item.getPrice();
-                    int[] asd = {countItem, price};
+                    int[] asd = {currentCount, price};
                     String json = new Gson().toJson(asd);
                     editorP.putString(currentItem.getName(), json).apply();
 
                     updateShoppingItems();
                     updateItemsList();
                 });
-    }
-
-    public int getCartItemCount(String phoneName){
-        SharedPreferences sharedPreferences = getSharedPreferences("phones", MODE_PRIVATE);
-        return sharedPreferences.getInt(phoneName, 0);
     }
 
     public int getCartItemCount() {

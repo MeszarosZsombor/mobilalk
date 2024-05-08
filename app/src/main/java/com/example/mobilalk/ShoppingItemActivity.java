@@ -28,8 +28,10 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import jp.wasabeef.glide.transformations.BlurTransformation;
 
@@ -103,11 +105,9 @@ public class ShoppingItemActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        addToCart = (Button) findViewById(R.id.add_to_cart);
+        addToCart = (Button) findViewById(R.id.add_item_to_cart);
 
-        addToCart.setOnClickListener(v -> {
-            updateAlertIcon(name);
-        });
+        addToCart.setOnClickListener(v -> updateAlertIcon(name));
 
         collection = FirebaseFirestore.getInstance().collection("Phones");
         adapter = new ShoppingItemAdapter(this, new ArrayList<>());
@@ -135,6 +135,9 @@ public class ShoppingItemActivity extends AppCompatActivity {
             return true;
         } else if (item.getItemId() == R.id.cart) {
             Intent intent = new Intent(ShoppingItemActivity.this, CartActivity.class);
+            SharedPreferences sharedPreferences = getSharedPreferences("phones", MODE_PRIVATE);
+            Map<String, ?> phones = sharedPreferences.getAll();
+            Log.d(TAG, "updateItemsList: " + phones);
             startActivity(intent);
             return true;
         } else{
@@ -208,13 +211,17 @@ public class ShoppingItemActivity extends AppCompatActivity {
                                 itemRef.update("count", count - 1).addOnSuccessListener(v -> {
                                     doc.toObject(ShoppingItem.class).setCount(count.intValue() - 1);
 
+                                    runOnUiThread(() -> adapter.notifyDataSetChanged());
+
                                     SharedPreferences sharedPreferencesP = getSharedPreferences("phones", MODE_PRIVATE);
                                     SharedPreferences.Editor editorP = sharedPreferencesP.edit();
                                     int itemCount = getCartItemCount(phoneName) + 1;
-                                    editorP.putInt(phoneName, itemCount);
+                                    String priceStr = doc.toObject(ShoppingItem.class).getPrice();
+                                    priceStr = priceStr.replace(" ", "").replace("Ft", "");
+                                    int[] asd = {itemCount, Integer.parseInt(priceStr)};
+                                    String json = new Gson().toJson(asd);
+                                    editorP.putString(phoneName, json);
                                     editorP.commit();
-
-                                    runOnUiThread(() -> adapter.notifyDataSetChanged());
                                 });
                             }
                         }).addOnFailureListener(e -> {
@@ -226,15 +233,34 @@ public class ShoppingItemActivity extends AppCompatActivity {
         }).addOnFailureListener(e -> {
             Log.e(TAG, "updateAlertIcon: ", e);
         });
+
     }
 
     public int getCartItemCount(String phoneName){
         SharedPreferences sharedPreferences = getSharedPreferences("phones", MODE_PRIVATE);
-        return sharedPreferences.getInt(phoneName, 0);
+        Map<String, ?> phones = sharedPreferences.getAll();
+        int count = 0;
+        String jsonString;
+
+        for (Map.Entry<String, ?> entry : phones.entrySet()) {
+            if (phoneName.equals(entry.getKey())) {
+                jsonString = (String) entry.getValue();
+                int[] json = new Gson().fromJson(jsonString, int[].class);
+                count = json[0];
+            }
+        }
+        return count;
     }
 
     public int getCartItemCount() {
         SharedPreferences sharedPreferences = getSharedPreferences("cart", MODE_PRIVATE);
         return sharedPreferences.getInt("cartItemCount", 0);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        refreshAlertIcon();
     }
 }
