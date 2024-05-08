@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,6 +27,8 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
 
     private Context mContext;
     private List<CartItem> mCartItems;
+    private int lastPosition = -1;
+
 //    private TotalAmountListener activity;
 
     CartItemAdapter(Context context, List<CartItem> cartItems){
@@ -47,6 +51,12 @@ public class CartItemAdapter extends RecyclerView.Adapter<CartItemAdapter.ViewHo
     public void onBindViewHolder(@NonNull CartItemAdapter.ViewHolder holder, int position) {
         CartItem currentItem = mCartItems.get(position);
         holder.bindTo(currentItem);
+
+        if(holder.getAdapterPosition() > lastPosition) {
+            Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.fadein);
+            holder.itemView.startAnimation(animation);
+            lastPosition = holder.getAdapterPosition();
+        }
     }
 
 
