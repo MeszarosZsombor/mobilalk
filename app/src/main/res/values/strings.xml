@@ -15,10 +15,8 @@
     <string name="item_info_placeholder">placeholder info\n</string>
     <string name="addToCart">Kosárba</string>
     <string name="logout">Kijelentkezés</string>
-    <string name="options">Beállítás</string>
     <string name="search">Search</string>
     <string name="cart">cart</string>
-    <string name="settings">Beállítások</string>
     <string name="title_activity_shopping_item">ShoppingItemActivity</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="open_map">Térkép megnyitása</string>
@@ -27,4 +25,6 @@
     <string name="add">+</string>
     <string name="pay">Fizetés</string>
     <string name="thank_you">Köszönjük a vásárlást!</string>
+    <string name="sortByNumber">Növekvő szerint sorrend</string>
+    <string name="abc">ABC szerint sorrend</string>
 </resources>

@@ -143,6 +143,8 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
 
             if(currentItem.getCount() < 10){
                 mCount.setText("Már csak " + currentItem.getCount() + " db maradt!");
+            } else {
+                mCount.setText("");
             }
 
             Glide.with(mContext).load(currentItem.getImageResource()).into(mItemImage);

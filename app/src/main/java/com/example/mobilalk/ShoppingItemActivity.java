@@ -117,21 +117,18 @@ public class ShoppingItemActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.shop_item_menu, menu);
 
-        MenuItem menuItem2 = menu.findItem(R.id.cart);
+        MenuItem menuItem = menu.findItem(R.id.cart);
         View view = LayoutInflater.from(this).inflate(R.layout.custom_menu_item, null);
-        menuItem2.setActionView(view);
+        menuItem.setActionView(view);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         Log.d(TAG,"onoptions");
-        if (item.getItemId() == R.id.log_out){
+        if (item.getItemId() == R.id.log_out_button){
             FirebaseAuth.getInstance().signOut();
             finish();
-            return true;
-        } else if (item.getItemId() == R.id.settings) {
-            Log.d(TAG, "Settings");
             return true;
         } else if (item.getItemId() == R.id.cart) {
             Intent intent = new Intent(ShoppingItemActivity.this, CartActivity.class);
@@ -147,6 +144,7 @@ public class ShoppingItemActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu){
+        super.onPrepareOptionsMenu(menu);
         final MenuItem alertMI = menu.findItem(R.id.cart);
         FrameLayout rootView = (FrameLayout) alertMI.getActionView();
         Log.d(TAG, "rootview: " + rootView);
@@ -158,7 +156,7 @@ public class ShoppingItemActivity extends AppCompatActivity {
 
         refreshAlertIcon();
 
-        return super.onPrepareOptionsMenu(menu);
+        return true;
     }
 
     public void refreshAlertIcon(){

@@ -34,6 +34,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.gson.Gson;
 
@@ -47,6 +48,7 @@ public class ShopActivity extends AppCompatActivity {
     private FirebaseUser user;
 
     private RecyclerView recyclerView;
+    private Menu menuGlobal;
     private ArrayList<ShoppingItem> itemList;
     private ShoppingItemAdapter adapter;
     private FirebaseFirestore firestore;
@@ -60,6 +62,8 @@ public class ShopActivity extends AppCompatActivity {
     private Button viewMore;
 
     private AlarmManager manager;
+    // 1 = sortByAlpha , 0 = sortByNumber
+    private int sortBy = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,24 +106,24 @@ public class ShopActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.shop_list_menu, menu);
 
-        MenuItem menuItem = menu.findItem(R.id.search_bar);
-        SearchView searchview = (SearchView) MenuItemCompat.getActionView(menuItem);
+//        MenuItem menuItem = menu.findItem(R.id.search_bar);
+//        SearchView searchview = (SearchView) MenuItemCompat.getActionView(menuItem);
 
         MenuItem menuItem2 = menu.findItem(R.id.cart);
         View view = LayoutInflater.from(this).inflate(R.layout.custom_menu_item, null);
         menuItem2.setActionView(view);
-        searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
-                return false;
-            }
-        });
+//        searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                adapter.getFilter().filter(newText);
+//                return false;
+//            }
+//        });
         return true;
     }
 
@@ -151,21 +155,39 @@ public class ShopActivity extends AppCompatActivity {
     private void queryData(){
         itemList.clear();
 
-        collection.orderBy("name").get().addOnSuccessListener(queryDocumentSnapshots -> {
-            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                ShoppingItem item = document.toObject(ShoppingItem.class);
-                if(item.getCount() > 0) {
-                    itemList.add(item);
+        if (sortBy == 1) {
+            collection.orderBy("name").get().addOnSuccessListener(queryDocumentSnapshots -> {
+                for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                    ShoppingItem item = document.toObject(ShoppingItem.class);
+                    if (item.getCount() > 0) {
+                        itemList.add(item);
+                    }
                 }
-            }
 
-            if (itemList.size() == 0) {
-                initializeData();
-                queryData();
-            } else {
-                displayData();
-            }
-        });
+                if (itemList.size() == 0) {
+                    initializeData();
+                    queryData();
+                } else {
+                    displayData();
+                }
+            });
+        } else {
+            collection.orderBy("count", Query.Direction.DESCENDING).get().addOnSuccessListener(queryDocumentSnapshots -> {
+                for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                    ShoppingItem item = document.toObject(ShoppingItem.class);
+                    if (item.getCount() > 0) {
+                        itemList.add(item);
+                    }
+                }
+
+                if (itemList.size() == 0) {
+                    initializeData();
+                    queryData();
+                } else {
+                    displayData();
+                }
+            });
+        }
 
         viewMore.setOnClickListener(v -> {
             limit += 4;
@@ -192,7 +214,19 @@ public class ShopActivity extends AppCompatActivity {
             FirebaseAuth.getInstance().signOut();
             finish();
             return true;
-        } else if (item.getItemId() == R.id.settings) {
+        } else if (item.getItemId() == R.id.greaterThan) {
+            MenuItem sort = menuGlobal.findItem(R.id.sortByAlphabet);
+            sortBy = 0;
+            queryData();
+            item.setVisible(false);
+            sort.setVisible(true);
+            return true;
+        } else if (item.getItemId() == R.id.sortByAlphabet) {
+            MenuItem greaterThanItem = menuGlobal.findItem(R.id.greaterThan);
+            sortBy = 1;
+            queryData();
+            item.setVisible(false);
+            greaterThanItem.setVisible(true);
             return true;
         } else if (item.getItemId() == R.id.cart) {
             Intent intent = new Intent(ShopActivity.this, CartActivity.class);
@@ -205,6 +239,7 @@ public class ShopActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu){
+        menuGlobal = menu;
         final MenuItem alertMI = menu.findItem(R.id.cart);
         FrameLayout rootView = (FrameLayout) alertMI.getActionView();
         Log.d(TAG, "rootview: " + rootView);

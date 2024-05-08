@@ -6,7 +6,8 @@
         android:id="@+id/search_bar"
         android:title="@string/search"
         android:icon="@drawable/search"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
+        android:visible="true"
         app:actionViewClass="android.widget.SearchView"
         />
 
@@ -19,16 +20,26 @@
         />
 
     <item
-        android:id="@+id/settings"
-        android:title="@string/settings"
-        app:showAsAction="never"
+        android:id="@+id/greaterThan"
+        android:icon="@drawable/sort_by_numbers"
         app:actionViewClass="android.widget.SearchView"
+        android:title="@string/sortByNumber"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/sortByAlphabet"
+        android:icon="@drawable/sort_by_alpha"
+        app:actionViewClass="android.widget.SearchView"
+        android:title="@string/abc"
+        app:showAsAction="ifRoom"
+        android:visible="false"
         />
 
     <item
         android:id="@+id/log_out"
         android:title="@string/logout"
-        app:showAsAction="never"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/logout"
         app:actionViewClass="android.widget.SearchView"
         />
 
