@@ -26,4 +26,5 @@
     <string name="remove">-</string>
     <string name="add">+</string>
     <string name="pay">Fizetés</string>
+    <string name="thank_you">Köszönjük a vásárlást!</string>
 </resources>

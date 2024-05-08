@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -40,6 +41,8 @@ public class CartActivity extends AppCompatActivity {
     private CartItemAdapter adapter;
 
     private LinearLayout layout;
+    private Button payButton;
+    private TextView thankYouTV;
 
     private MutableLiveData<List<CartItem>> shoppingItemsLiveData = new MutableLiveData<>();
 
@@ -60,6 +63,8 @@ public class CartActivity extends AppCompatActivity {
         cartItemsList = new ArrayList<>();
 
         layout = findViewById(R.id.layout);
+        payButton = (Button) findViewById(R.id.toPay);
+        thankYouTV = findViewById(R.id.thank_you);
 
         totalTV = findViewById(R.id.sumPrice);
         updateItemsList();
@@ -72,6 +77,10 @@ public class CartActivity extends AppCompatActivity {
         getShoppingItems().observe(this,cartItemsList -> {
             adapter.setShoppingItems(cartItemsList);
             adapter.notifyDataSetChanged();
+        });
+
+        payButton.setOnClickListener(v -> {
+            pay();
         });
     }
 
@@ -102,7 +111,6 @@ public class CartActivity extends AppCompatActivity {
     public void updateItemsList(){
         SharedPreferences sharedPreferences = getSharedPreferences("phones", MODE_PRIVATE);
         Map<String, ?> phones = sharedPreferences.getAll();
-        Log.d(TAG, "updateItemsList: " + phones);
 
         cartItemsList.clear();
         for (Map.Entry<String, ?> entry : phones.entrySet()) {
@@ -176,5 +184,34 @@ public class CartActivity extends AppCompatActivity {
     public int getCartItemCount() {
         SharedPreferences sharedPreferences = getSharedPreferences("cart", MODE_PRIVATE);
         return sharedPreferences.getInt("cartItemCount", 0);
+    }
+
+    private void pay() {
+        collection.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot doc : task.getResult()) {
+                    if (doc.toObject(ShoppingItem.class).getCount() == 0) {
+                        String id = doc.getId();
+                        DocumentReference itemRef = collection.document(id);
+
+                        itemRef.get().addOnSuccessListener(documentSnapshot -> {
+                            itemRef.delete();
+                        });
+                    }
+                }
+            }
+        });
+
+        SharedPreferences sharedPreferences = getSharedPreferences("cart", MODE_PRIVATE);
+        sharedPreferences.edit().clear().apply();
+
+        SharedPreferences sharedPreferencesP = getSharedPreferences("phones", MODE_PRIVATE);
+        sharedPreferencesP.edit().clear().apply();
+
+        cartItemsList.clear();
+        setTotalAmount();
+        adapter.notifyDataSetChanged();
+
+        thankYouTV.setVisibility(View.VISIBLE);
     }
 }

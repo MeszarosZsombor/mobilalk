@@ -94,12 +94,6 @@ public class ShopActivity extends AppCompatActivity {
 
         viewMore = findViewById(R.id.viewMore);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("cart", MODE_PRIVATE);
-        sharedPreferences.edit().clear().apply();
-
-        SharedPreferences sharedPreferencesP = getSharedPreferences("phones", MODE_PRIVATE);
-        sharedPreferencesP.edit().clear().apply();
-
         setAlarmManager();
         queryData();
     }
