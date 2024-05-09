@@ -83,20 +83,6 @@ Professzionális Kamerarendszer: Az új készülék kiemelkedik nagy felbontás�
         <item>200 000 Ft</item>
         <item>220 000 Ft</item>
     </string-array>
-    <string-array name="phone_image">
-        <item>@drawable/galaxys24</item>
-        <item>@drawable/galaxys24ultra</item>
-        <item>@drawable/iphone15</item>
-        <item>@drawable/iphone15pro</item>
-        <item>@drawable/iphone14</item>
-        <item>@drawable/iphone14promax</item>
-        <item>@drawable/iphone13</item>
-        <item>@drawable/phone2a</item>
-        <item>@drawable/iphone13mini</item>
-        <item>@drawable/phone2</item>
-        <item>@drawable/galaxys23</item>
-        <item>@drawable/galaaxys23ultra</item>
-    </string-array>
     <integer-array name="count">
         <item>20</item>
         <item>50</item>

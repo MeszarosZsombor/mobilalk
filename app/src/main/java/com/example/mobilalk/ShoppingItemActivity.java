@@ -66,11 +66,11 @@ public class ShoppingItemActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(name);
         }
 
-        ImageView imageView = (ImageView) findViewById(R.id.itemImage);
+        ImageView imageView = findViewById(R.id.itemImage);
         TextView priceTV = findViewById(R.id.price);
         TextView descTV = findViewById(R.id.description);
 
-        ImageView map = (ImageView) findViewById(R.id.map);
+        ImageView map = findViewById(R.id.map);
 
         if(count < 10) {
             TextView countTV = findViewById(R.id.count);
@@ -98,14 +98,14 @@ public class ShoppingItemActivity extends AppCompatActivity {
 
         Log.d(TAG, "Map: " + map);
 
-        mapButton = (Button) findViewById(R.id.open_map);
+        mapButton = findViewById(R.id.open_map);
 
         mapButton.setOnClickListener(v -> {
             Intent intent = new Intent(ShoppingItemActivity.this, MapsActivity.class);
             startActivity(intent);
         });
 
-        addToCart = (Button) findViewById(R.id.add_item_to_cart);
+        addToCart = findViewById(R.id.add_item_to_cart);
 
         addToCart.setOnClickListener(v -> updateAlertIcon(name));
 

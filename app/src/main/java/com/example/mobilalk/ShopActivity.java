@@ -61,7 +61,10 @@ public class ShopActivity extends AppCompatActivity {
     private int cartItems;
     private int gridNumber = 2;
     private int limit = 4;
+    private boolean initialDataLoaded = false;
     private Button viewMore;
+
+    private SearchView searchview;
 
     private AlarmManager manager;
     // 1 = sortByAlpha , 0 = sortByNumber
@@ -113,7 +116,7 @@ public class ShopActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.shop_list_menu, menu);
 
         MenuItem menuItem = menu.findItem(R.id.search_bar);
-        SearchView searchview = (SearchView) MenuItemCompat.getActionView(menuItem);
+        searchview = (SearchView) MenuItemCompat.getActionView(menuItem);
 
         MenuItem menuItem2 = menu.findItem(R.id.cart);
         View view = LayoutInflater.from(this).inflate(R.layout.custom_menu_item, null);
@@ -130,35 +133,49 @@ public class ShopActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        menuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(@NonNull MenuItem item) {
+                return false;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(@NonNull MenuItem item) {
+                return false;
+            }
+        });
+
         return true;
     }
 
 
-    private void initializeData(){
+    private void initializeData() {
         String[] itemsList = getResources().getStringArray(R.array.phone_name);
         String[] itemsInfo = getResources().getStringArray(R.array.phone_info);
         String[] itemsPrice = getResources().getStringArray(R.array.phone_price);
         String[] itemsDesc = getResources().getStringArray(R.array.phone_desc);
         int[] itemsCount = getResources().getIntArray(R.array.count);
-        TypedArray itemsImageResource = getResources().obtainTypedArray(R.array.phone_image);
-        Log.d(TAG, itemsImageResource.toString());
+        ArrayList<Integer> imageList = new ArrayList<>();
 
-        for (int i = 0; i < itemsList.length; i++){
-                collection.add(new ShoppingItem(
-                        itemsList[i],
-                        itemsInfo[i],
-                        itemsDesc[i],
-                        itemsPrice[i],
-                        itemsImageResource.getResourceId(i, 0),
-                        itemsCount[i]
-                ));
+        for (int i = 0; i < itemsList.length; i++) {
+            String imageName = itemsList[i].toLowerCase().replace(" ", "") + "img";
+            int imageId = getResources().getIdentifier(imageName, "drawable", getPackageName());
+            imageList.add(imageId);
+
+            collection.add(new ShoppingItem(
+                    itemsList[i],
+                    itemsInfo[i],
+                    itemsDesc[i],
+                    itemsPrice[i],
+                    imageId,
+                    itemsCount[i]
+            ));
         }
-
-        itemsImageResource.recycle();
     }
 
 
-    private void queryData(){
+    private void queryData() {
         itemList.clear();
 
         if (sortBy == 1) {
@@ -170,29 +187,20 @@ public class ShopActivity extends AppCompatActivity {
                     }
                 }
 
-                if (itemList.size() == 0) {
+                if (itemList.size() == 0 && !initialDataLoaded) {
                     initializeData();
-                    queryData();
-                } else {
-                    displayData();
-                }
-            });
-        } else {
-            collection.orderBy("count", Query.Direction.DESCENDING).get().addOnSuccessListener(queryDocumentSnapshots -> {
-                for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                    ShoppingItem item = document.toObject(ShoppingItem.class);
-                    if (item.getCount() > 0) {
-                        itemList.add(item);
-                    }
+                    initialDataLoaded = true;
                 }
 
-                if (itemList.size() == 0) {
-                    initializeData();
-                    queryData();
-                } else {
-                    displayData();
-                }
+                displayData();
             });
+        } else {
+            if (itemList.size() == 0 && !initialDataLoaded) {
+                initializeData();
+                initialDataLoaded = true;
+            }
+
+            displayData();
         }
 
         viewMore.setOnClickListener(v -> {
@@ -206,17 +214,15 @@ public class ShopActivity extends AppCompatActivity {
         adapter.setData(displayList);
         adapter.notifyDataSetChanged();
 
-        if(limit >= itemList.size()){
+        if (limit >= itemList.size()) {
             viewMore.setVisibility(View.GONE);
-
-            queryData();
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Log.d(TAG,"onoptions");
-        if (item.getItemId() == R.id.log_out){
+        Log.d(TAG, "onoptions");
+        if (item.getItemId() == R.id.log_out) {
             FirebaseAuth.getInstance().signOut();
             finish();
             return true;
@@ -238,7 +244,7 @@ public class ShopActivity extends AppCompatActivity {
             Intent intent = new Intent(ShopActivity.this, CartActivity.class);
             startActivity(intent);
             return true;
-        } else{
+        }else{
             return super.onOptionsItemSelected(item);
         }
     }

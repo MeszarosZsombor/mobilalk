@@ -1,7 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.Mobilalk" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.Mobilalk" parent="Theme.Material3.DayNight">
         <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">@color/neongreen</item>
+        <item name="android:textColor">@color/white</item>
     </style>
+
+    <style name="Theme.Mobilalk" parent="Base.Theme.Mobilalk" />
+
+    <style name="ItemDetailText" parent="TextAppearance.AppCompat.Subhead" />
+
+    <style name="ItemTitle" parent="TextAppearance.AppCompat.Headline" />
+
+    <style name="ItemDetailTitle" parent="TextAppearance.AppCompat.Headline" />
 </resources>

@@ -22,7 +22,8 @@
             android:layout_below="@id/itemImage"
             android:padding="8dp"
             android:text="@string/item_placeholder"
-            android:textColor="?android:textColorSecondary" />
+            android:textStyle="bold"
+            android:textSize="19sp"/>
 
         <TextView
             android:id="@+id/description"

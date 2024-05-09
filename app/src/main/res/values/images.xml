@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <item name="galaxys24" type="drawable">@drawable/samsunggalaxys24img</item>
+        <item name="galaxys24ultra" type="drawable">@drawable/samsunggalaxys24ultraimg</item>
+        <item name="iphone15" type="drawable">@drawable/appleiphone15img</item>
+        <item name="iphone15pro" type="drawable">@drawable/appleiphone15proimg</item>
+        <item name="iphone14" type="drawable">@drawable/appleiphone14img</item>
+        <item name="iphone14promax" type="drawable">@drawable/appleiphone14promaximg</item>
+        <item name="iphone13" type="drawable">@drawable/appleiphone13img</item>
+        <item name="phone2a" type="drawable">@drawable/nothingphone2aimg</item>
+        <item name="iphone13mini" type="drawable">@drawable/appleiphone13miniimg</item>
+        <item name="phone2" type="drawable">@drawable/nothingphone2img</item>
+        <item name="galaxys23" type="drawable">@drawable/samsunggalaxys23img</item>
+        <item name="galaaxys23ultra" type="drawable">@drawable/samsunggalaxys23img</item>
+</resources>
