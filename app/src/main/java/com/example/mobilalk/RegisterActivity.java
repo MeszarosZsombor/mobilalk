@@ -52,6 +52,8 @@ public class RegisterActivity extends AppCompatActivity {
             return insets;
         });
 
+        getSupportActionBar().hide();
+
         initDatePicker();
 
         usernameET = findViewById(R.id.editTextUsername);

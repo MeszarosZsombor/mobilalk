@@ -60,6 +60,10 @@ public class CartActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setTitle("Kosár");
+        }
+
         cartItemsList = new ArrayList<>();
 
         layout = findViewById(R.id.layout);

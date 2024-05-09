@@ -42,6 +42,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import kotlinx.coroutines.ObsoleteCoroutinesApi;
+
 public class ShopActivity extends AppCompatActivity {
 
     private static final String TAG = ShopActivity.class.getName();
@@ -84,6 +86,10 @@ public class ShopActivity extends AppCompatActivity {
             finish();
         }
 
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setTitle("Áruház");
+        }
+
         recyclerView = findViewById(R.id.shopListView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, gridNumber));
         itemList = new ArrayList<>();
@@ -106,24 +112,24 @@ public class ShopActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.shop_list_menu, menu);
 
-//        MenuItem menuItem = menu.findItem(R.id.search_bar);
-//        SearchView searchview = (SearchView) MenuItemCompat.getActionView(menuItem);
+        MenuItem menuItem = menu.findItem(R.id.search_bar);
+        SearchView searchview = (SearchView) MenuItemCompat.getActionView(menuItem);
 
         MenuItem menuItem2 = menu.findItem(R.id.cart);
         View view = LayoutInflater.from(this).inflate(R.layout.custom_menu_item, null);
         menuItem2.setActionView(view);
-//        searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                adapter.getFilter().filter(newText);
-//                return false;
-//            }
-//        });
+        searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                return false;
+            }
+        });
         return true;
     }
 
@@ -373,5 +379,12 @@ public class ShopActivity extends AppCompatActivity {
         super.onResume();
 
         refreshAlertIcon();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        onOptionsMenuClosed(menuGlobal);
     }
 }

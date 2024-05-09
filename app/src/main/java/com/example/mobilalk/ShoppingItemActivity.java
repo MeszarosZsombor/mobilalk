@@ -117,9 +117,12 @@ public class ShoppingItemActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.shop_item_menu, menu);
 
-        MenuItem menuItem = menu.findItem(R.id.cart);
+        MenuItem menuItem = menu.findItem(R.id.cart_in_item);
         View view = LayoutInflater.from(this).inflate(R.layout.custom_menu_item, null);
         menuItem.setActionView(view);
+
+        invalidateOptionsMenu();
+
         return true;
     }
 
@@ -130,7 +133,7 @@ public class ShoppingItemActivity extends AppCompatActivity {
             FirebaseAuth.getInstance().signOut();
             finish();
             return true;
-        } else if (item.getItemId() == R.id.cart) {
+        } else if (item.getItemId() == R.id.cart_in_item) {
             Intent intent = new Intent(ShoppingItemActivity.this, CartActivity.class);
             SharedPreferences sharedPreferences = getSharedPreferences("phones", MODE_PRIVATE);
             Map<String, ?> phones = sharedPreferences.getAll();
@@ -145,7 +148,7 @@ public class ShoppingItemActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu){
         super.onPrepareOptionsMenu(menu);
-        final MenuItem alertMI = menu.findItem(R.id.cart);
+        final MenuItem alertMI = menu.findItem(R.id.cart_in_item);
         FrameLayout rootView = (FrameLayout) alertMI.getActionView();
         Log.d(TAG, "rootview: " + rootView);
 

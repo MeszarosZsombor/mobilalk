@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
+        getSupportActionBar().hide();
+
         emailET = findViewById(R.id.editTextEmail);
         passwordET = findViewById(R.id.editTextPassword);
 
