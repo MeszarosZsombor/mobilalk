@@ -29,6 +29,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 public class MainActivity extends AppCompatActivity {
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(requestCode == RC_SIGN_IN){
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-
+            handleSignInResult(task);
             try{
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 Log.d(LOG_TAG, "firebaseAuthGoogle: " + account.getId());
@@ -85,6 +86,16 @@ public class MainActivity extends AppCompatActivity {
             } catch (ApiException e){
                 Log.w(LOG_TAG, "Google sign in failed");
             }
+        }
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+
+            loginSuccess();
+        } catch (ApiException e) {
+            Log.w(LOG_TAG, "signInResult:failed code=" + e.getStatusCode());
         }
     }
 
@@ -111,21 +122,23 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void login(View view) {
-        String email = emailET.getText().toString();
-        String password = passwordET.getText().toString();
+        if (!emailET.getText().toString().isEmpty() && !passwordET.getText().toString().isEmpty()) {
 
-        firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
+            String email = emailET.getText().toString();
+            String password = passwordET.getText().toString();
+
+            firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
+                if (task.isSuccessful()) {
                     Log.d(LOG_TAG, "User logged in");
                     loginSuccess();
-                }else{
+                } else {
                     Log.d(LOG_TAG, "User not logged in");
-                    Toast.makeText(MainActivity.this, "User not logged in:" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "Nem sikerült belépni:" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                 }
-            }
-        });
+            });
+        } else {
+            Toast.makeText(MainActivity.this, "Email cím vagy jelszó nincs kitöltve!", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

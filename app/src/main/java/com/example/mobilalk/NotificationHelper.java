@@ -35,7 +35,7 @@ public class NotificationHelper {
         channel.enableLights(true);
         channel.setLightColor(Color.RED);
         channel.enableVibration(true);
-        channel.setDescription("Notifications from Shop application");
+        channel.setDescription("Notifications from Phone Shop application");
 
         mNotifyManager.createNotificationChannel(channel);
     }
@@ -47,6 +47,7 @@ public class NotificationHelper {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(mContext, CHANNEL_ID)
                 .setContentTitle("Shop Application")
                 .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setSmallIcon(R.drawable.shopping_cart)
                 .setContentIntent(pendingIntent);
 
