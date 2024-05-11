@@ -95,20 +95,6 @@
             app:layout_constraintVertical_bias="0.19" />
 
         <Button
-            android:id="@+id/loginWithGoogleButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="15dp"
-            android:ems="20"
-            android:onClick="loginWithGoogle"
-            android:text="@string/loginWithGoogle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.493"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/loginButton" />
-
-        <Button
             android:id="@+id/continueAsGuestButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
