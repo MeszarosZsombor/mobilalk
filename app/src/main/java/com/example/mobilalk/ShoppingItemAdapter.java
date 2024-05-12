@@ -2,6 +2,8 @@ package com.example.mobilalk;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +40,8 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
 
 
     ShoppingItemAdapter(Context context, ArrayList<ShoppingItem> itemsData) {
-        this.mShoppingItemData = itemsData;
-        this.mShoppingItemDataAll = itemsData;
+        this.mShoppingItemData = itemsData != null ? itemsData : new ArrayList<>();
+        this.mShoppingItemDataAll = itemsData != null ? itemsData : new ArrayList<>();
         this.mContext = context;
     }
 
@@ -77,10 +80,10 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
         return shoppingFilter;
     }
 
+
     private Filter shoppingFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence charSequence) {
-            ArrayList<ShoppingItem> filteredList = new ArrayList<>();
             FilterResults results = new FilterResults();
 
             if(charSequence == null || charSequence.length() == 0) {
@@ -88,12 +91,13 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
                 results.values = mShoppingItemDataAll;
             } else {
                 String filterPattern = charSequence.toString().toLowerCase().trim();
-                for(ShoppingItem item : mShoppingItemDataAll) {
-                    if(item.getName().toLowerCase().contains(filterPattern)){
+
+                ArrayList<ShoppingItem> filteredList = new ArrayList<>();
+                for (ShoppingItem item : mShoppingItemDataAll) {
+                    if (item.getName().toLowerCase().contains(filterPattern)) {
                         filteredList.add(item);
                     }
                 }
-
                 results.count = filteredList.size();
                 results.values = filteredList;
             }
@@ -103,8 +107,10 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemAdapte
 
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            mShoppingItemData = (ArrayList)filterResults.values;
-            notifyDataSetChanged();
+            if (filterResults.values != null) {
+                mShoppingItemData = (ArrayList<ShoppingItem>) filterResults.values;
+                notifyDataSetChanged();
+            }
         }
     };
 

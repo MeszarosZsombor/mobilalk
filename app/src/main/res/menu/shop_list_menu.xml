@@ -23,7 +23,7 @@
         android:id="@+id/greaterThan"
         android:icon="@drawable/sort_by_numbers"
         app:actionViewClass="android.widget.SearchView"
-        android:title="@string/sortByNumber"
+        android:title="@string/sortByCount"
         app:showAsAction="ifRoom"/>
 
     <item
@@ -38,7 +38,7 @@
     <item
         android:id="@+id/log_out"
         android:title="@string/logout"
-        app:showAsAction="ifRoom"
+        app:showAsAction="never"
         android:icon="@drawable/logout"
         app:actionViewClass="android.widget.SearchView"
         />

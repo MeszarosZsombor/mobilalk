@@ -188,16 +188,32 @@ public class ShopActivity extends AppCompatActivity {
                 }
 
                 if (itemList.size() == 0 && !initialDataLoaded) {
-                    initializeData();
-                    initialDataLoaded = true;
+                    collection.get().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().isEmpty()) {
+                                initializeData();
+                                initialDataLoaded = true;
+                            }
+                        } else {
+                            Log.d(TAG, "Error checking if collection exists: ", task.getException());
+                        }
+                    });
                 }
 
                 displayData();
             });
         } else {
             if (itemList.size() == 0 && !initialDataLoaded) {
-                initializeData();
-                initialDataLoaded = true;
+                collection.get().addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        if (task.getResult().isEmpty()) {
+                            initializeData();
+                            initialDataLoaded = true;
+                        }
+                    } else {
+                        Log.d(TAG, "Error checking if collection exists: ", task.getException());
+                    }
+                });
             }
 
             displayData();

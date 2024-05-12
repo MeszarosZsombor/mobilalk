@@ -25,6 +25,6 @@
     <string name="add">+</string>
     <string name="pay">Fizetés</string>
     <string name="thank_you">Köszönjük a vásárlást!</string>
-    <string name="sortByNumber">Növekvő szerint sorrend</string>
+    <string name="sortByCount">Darabszám szerint sorrend</string>
     <string name="abc">ABC szerint sorrend</string>
 </resources>

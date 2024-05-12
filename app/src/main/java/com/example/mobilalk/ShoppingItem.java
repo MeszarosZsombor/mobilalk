@@ -1,6 +1,8 @@
 package com.example.mobilalk;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShoppingItem implements Serializable {
     private String name;
