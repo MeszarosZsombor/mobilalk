@@ -203,20 +203,29 @@ public class ShopActivity extends AppCompatActivity {
                 displayData();
             });
         } else {
-            if (itemList.size() == 0 && !initialDataLoaded) {
-                collection.get().addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        if (task.getResult().isEmpty()) {
-                            initializeData();
-                            initialDataLoaded = true;
-                        }
-                    } else {
-                        Log.d(TAG, "Error checking if collection exists: ", task.getException());
+            collection.orderBy("count", Query.Direction.DESCENDING).get().addOnSuccessListener(queryDocumentSnapshots -> {
+                for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                    ShoppingItem item = document.toObject(ShoppingItem.class);
+                    if (item.getCount() > 0) {
+                        itemList.add(item);
                     }
-                });
-            }
+                }
 
-            displayData();
+                if (itemList.size() == 0 && !initialDataLoaded) {
+                    collection.get().addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().isEmpty()) {
+                                initializeData();
+                                initialDataLoaded = true;
+                            }
+                        } else {
+                            Log.d(TAG, "Error checking if collection exists: ", task.getException());
+                        }
+                    });
+                }
+
+                displayData();
+            });
         }
 
         viewMore.setOnClickListener(v -> {
